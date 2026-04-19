@@ -1,0 +1,12 @@
+{
+  "name": "career",
+  "version": "1.0.0",
+  "description": "Career planning, job search, and salary research primitives. Ships role logging, offer comparison, application tracking, and salary benchmarking commands plus a provisioning skill for a fresh career workspace (career-planning / job-search / salary-research variants).",
+  "author": {
+    "name": "Daniel Rosehill",
+    "url": "https://github.com/danielrosehill"
+  },
+  "repository": "https://github.com/danielrosehill/Claude-Career-Plugin",
+  "license": "MIT",
+  "keywords": ["career", "job-search", "salary", "cpd", "compensation", "application-tracking"]
+}
