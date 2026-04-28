@@ -19,7 +19,7 @@ Sends a draft. Always requires explicit user confirmation. Always logs to `crm/o
 
 ### 1. Resolve config + read draft
 
-Read `~/.config/career-os/config.json`:
+Read `${CAREER_DATA_DIR}/config.json`:
 - `WORKING_FOLDER`
 - `PREFERRED_EMAIL_SENDER`, `SECONDARY_EMAIL_SENDER`
 - `companions.email` — must be `true`. If `false`, bail with instruction to run `/career:install-companion-plugins`.

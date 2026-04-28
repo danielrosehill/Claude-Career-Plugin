@@ -32,7 +32,7 @@ State-change updates on outreach log rows. Append-only spirit: the date columns 
 
 ### 1. Resolve config + path
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`.
 File: `${WORKING_FOLDER}/crm/outreach.md`.
 
 ### 2. Locate the row

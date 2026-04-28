@@ -38,7 +38,7 @@ Always saves to `drafts/` and shows the user for review. Sending is a separate s
 
 ### 1. Resolve config + paths
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`, `PREFERRED_EMAIL_SENDER`, `SECONDARY_EMAIL_SENDER`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`, `PREFERRED_EMAIL_SENDER`, `SECONDARY_EMAIL_SENDER`.
 
 Compute slug. Confirm:
 - `${WORKING_FOLDER}/ground-truth.md` exists and is populated.

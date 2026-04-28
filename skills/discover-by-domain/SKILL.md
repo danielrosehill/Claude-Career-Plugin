@@ -30,7 +30,7 @@ Given a niche, enumerate the main companies operating in it. Builds a per-domain
 
 ### 1. Resolve config + paths
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`. Output path: `${WORKING_FOLDER}/domain-notes/${slug}.md`. If exists and no `--refresh`, ask whether to extend, replace, or open existing.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. Output path: `${WORKING_FOLDER}/domain-notes/${slug}.md`. If exists and no `--refresh`, ask whether to extend, replace, or open existing.
 
 ### 2. Define the niche
 

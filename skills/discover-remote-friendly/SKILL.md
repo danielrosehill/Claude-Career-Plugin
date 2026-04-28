@@ -13,7 +13,7 @@ Domain ∩ remote-friendly to `USER_LOCATION`. The bar: would *this user, in the
 
 `$ARGUMENTS`:
 - **Required**: `<domain>` — the niche (free text).
-- Optional: `--location=<override>` — defaults to `USER_LOCATION` from `~/.config/career-os/config.json`.
+- Optional: `--location=<override>` — defaults to `USER_LOCATION` from `${CAREER_DATA_DIR}/config.json`.
 - Optional: `--n=<count>` (default 20).
 - Optional: `--lens=<employer|client>` — defaults `employer`. `client` mode looks for companies that *buy* remote services rather than employ remotely.
 - Optional: `--strict` — only "global remote" / "anywhere"; exclude "remote within EMEA" unless EMEA covers the user.

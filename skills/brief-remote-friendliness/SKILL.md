@@ -20,7 +20,7 @@ The brief that reads against marketing copy. Many "remote-first" companies will 
 
 ### 1. Resolve config + paths
 
-Read `~/.config/career-os/config.json`. Get `WORKING_FOLDER` and `USER_LOCATION`. If `USER_LOCATION` is missing and not provided, prompt — this brief is meaningless without it.
+Read `${CAREER_DATA_DIR}/config.json`. Get `WORKING_FOLDER` and `USER_LOCATION`. If `USER_LOCATION` is missing and not provided, prompt — this brief is meaningless without it.
 
 Output: `${WORKING_FOLDER}/research/companies/${slug}/remote-friendliness.md`.
 

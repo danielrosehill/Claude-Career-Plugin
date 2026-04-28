@@ -19,7 +19,7 @@ Take an audio file → transcript → classification → proposed route. Output 
 ### Examples
 
 ```
-/career:capture /home/daniel/voice-memos/2026-04-28-1430.opus
+/career:capture ~/voice-memos/2026-04-28-1430.opus
 /career:capture ~/Downloads/note.m4a --engine=gemini
 ```
 
@@ -27,7 +27,7 @@ Take an audio file → transcript → classification → proposed route. Output 
 
 ### 1. Resolve config + paths
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`, `companions.transcription` (e.g. `claude-transcription`).
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`, `companions.transcription` (e.g. `claude-transcription`).
 
 If `companions.transcription` is missing, bail with: "no transcription companion installed — run `/career:onboard` and accept the transcription companion offer, or install `claude-transcription` manually."
 

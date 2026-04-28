@@ -55,7 +55,7 @@ Planning (Stage 7+):
 
 ## Configuration
 
-Plugin-level config lives at `~/.config/career-os/config.json` and points back to this workspace via `WORKING_FOLDER`. Edit the config to switch context-store, email sender, or CRM adapter.
+Plugin-level config lives at `${CAREER_DATA_DIR}/config.json` and points back to this workspace via `WORKING_FOLDER`. Edit the config to switch context-store, email sender, or CRM adapter.
 
 ## Notes
 

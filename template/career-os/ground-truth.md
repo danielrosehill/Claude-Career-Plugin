@@ -38,7 +38,7 @@ _TBD_
 
 <!-- Non-negotiable filters. Used by remote-friendliness + discover-by-geography. -->
 
-- **Location**: _e.g. Israel; remote-friendly to IL only_
+- **Location**: _e.g. Berlin, DE; remote-friendly to EU only_
 - **Hours**: _e.g. async-friendly, no on-call rotation_
 - **Family / life**: _e.g. caregiver responsibilities — no >2 weeks/yr travel_
 - **Other**: _e.g. no defense / gambling / adtech_

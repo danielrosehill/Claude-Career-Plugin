@@ -20,7 +20,7 @@ Aggregate sentiment, *not* a list of individual reviews. The point is patterns a
 
 ### 1. Resolve config + paths
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/glassdoor-signal.md`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/glassdoor-signal.md`.
 
 ### 2. Read template
 

@@ -20,7 +20,7 @@ Six modular briefs run in parallel, then a top-level synthesis. Use when the use
 
 ### 1. Resolve config
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`, `USER_LOCATION`. If config is missing, bail with instructions to run `/career:onboard`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`, `USER_LOCATION`. If config is missing, bail with instructions to run `/career:onboard`.
 
 ### 2. Decide brief set
 

@@ -20,7 +20,7 @@ Numbers only. No narrative.
 
 ### 1. Resolve config + paths
 
-Read `~/.config/career-os/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/company-financials.md`. Confirm before overwrite.
+Read `${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/company-financials.md`. Confirm before overwrite.
 
 ### 2. Read template
 

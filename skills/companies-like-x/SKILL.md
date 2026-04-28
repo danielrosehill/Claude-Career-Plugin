@@ -30,7 +30,7 @@ Given a seed company, enumerate peers along a chosen similarity axis. Avoids gen
 
 ### 1. Resolve config + paths
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/domain-notes/like-${seed-slug}.md`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/domain-notes/like-${seed-slug}.md`.
 
 ### 2. Profile the seed
 

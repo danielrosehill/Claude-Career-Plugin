@@ -67,7 +67,7 @@ Offer to run each one now or later.
 
 ### 5. Update career-os config
 
-For each installed plugin, persist a flag in `~/.config/career-os/config.json` under `companions`:
+For each installed plugin, persist a flag in `${CAREER_DATA_DIR}/config.json` under `companions`:
 
 ```json
 {

@@ -20,7 +20,7 @@ How and whether they're actually hiring. Distinguishes live activity from boiler
 
 ### 1. Resolve config + paths
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/recruitment-profile.md`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/recruitment-profile.md`.
 
 ### 2. Read template
 

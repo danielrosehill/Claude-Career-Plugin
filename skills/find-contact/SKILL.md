@@ -30,7 +30,7 @@ Hunter.io wrapper. Finds people at a target company and returns ranked candidate
 
 ### 1. Resolve config
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`. If `companions.email` is `false`, warn the user that `send-outreach` won't work yet — `find-contact` can still proceed.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. If `companions.email` is `false`, warn the user that `send-outreach` won't work yet — `find-contact` can still proceed.
 
 ### 2. Resolve domain
 

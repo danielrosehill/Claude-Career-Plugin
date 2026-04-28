@@ -25,7 +25,7 @@ Manual entry into the outreach log. The send-outreach skill calls this implicitl
 
 ### 1. Resolve config + path
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`. Confirm `${WORKING_FOLDER}/crm/outreach.md` exists; if not, copy from the plugin template.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. Confirm `${WORKING_FOLDER}/crm/outreach.md` exists; if not, copy from the plugin template.
 
 ### 2. Gather missing fields
 

@@ -7,7 +7,7 @@ allowed-tools: Read, Edit, Write, Bash(test *), Bash(cat *)
 
 # Ground Truth — read/edit
 
-`ground-truth.md` lives at the root of the user's `WORKING_FOLDER` (read from `~/.config/career-os/config.json`). It's the single source of truth that every other skill reads before doing anything. Stale or missing ground-truth → bad recommendations.
+`ground-truth.md` lives at the root of the user's `WORKING_FOLDER` (read from `${CAREER_DATA_DIR}/config.json`). It's the single source of truth that every other skill reads before doing anything. Stale or missing ground-truth → bad recommendations.
 
 ## When to invoke
 
@@ -34,7 +34,7 @@ The doc has these named sections — preserve order, preserve any sections not i
 
 ### 1. Resolve the path
 
-Read `~/.config/career-os/config.json` for `WORKING_FOLDER`. If config is missing, prompt the user to run `/career:onboard` first.
+Read `${CAREER_DATA_DIR}/config.json` for `WORKING_FOLDER`. If config is missing, prompt the user to run `/career:onboard` first.
 
 Target file: `${WORKING_FOLDER}/ground-truth.md`.
 

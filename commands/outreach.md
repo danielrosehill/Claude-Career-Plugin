@@ -44,7 +44,7 @@ If invoked without a subcommand, print this help and stop.
 - `find` requires the `hunter` MCP.
 - `send` requires the `email-skills` companion plugin.
 - `draft` requires populated `ground-truth.md` (warns and continues if research briefs are missing — drafts will be thinner).
-- All write to `${WORKING_FOLDER}` per `~/.config/career-os/config.json`.
+- All write to `${WORKING_FOLDER}` per `${CAREER_DATA_DIR}/config.json`.
 
 ## Confirmation discipline
 

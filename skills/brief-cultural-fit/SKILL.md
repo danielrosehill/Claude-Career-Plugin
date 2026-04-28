@@ -20,7 +20,7 @@ The brief that pairs user's operating style with the company's. Most consequenti
 
 ### 1. Resolve config + paths
 
-`~/.config/career-os/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/cultural-fit.md`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`. Output: `${WORKING_FOLDER}/research/companies/${slug}/cultural-fit.md`.
 
 ### 2. Read inputs
 

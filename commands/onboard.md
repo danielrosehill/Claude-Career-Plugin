@@ -18,9 +18,27 @@ If no variant declared: ask the user, defaulting to `career-os`.
 
 If variant is `career-os`, run this branch and stop here.
 
-#### 2a. Write global plugin config
+#### 2a. Resolve plugin data dir
 
-Path: `~/.config/career-os/config.json`. If it already exists, read it and offer to update fields rather than overwriting.
+Resolve `CAREER_DATA_DIR` per the standard convention:
+
+```bash
+CAREER_DATA_DIR="${CLAUDE_USER_DATA:-${XDG_DATA_HOME:-$HOME/.local/share}/claude-plugins}/career"
+mkdir -p "$CAREER_DATA_DIR"
+```
+
+Order of resolution:
+1. `$CLAUDE_USER_DATA/career/` if `CLAUDE_USER_DATA` is set.
+2. Else `$XDG_DATA_HOME/claude-plugins/career/` if `XDG_DATA_HOME` is set.
+3. Else `~/.local/share/claude-plugins/career/`.
+
+Never write under `~/.claude/` — that's the install dir and gets overwritten on plugin update.
+
+**Migration**: if a legacy config exists at `~/.config/career-os/config.json` and the new path is empty, move it to `${CAREER_DATA_DIR}/config.json` and delete the legacy file. Inform the user.
+
+#### 2b. Write global plugin config
+
+Path: `${CAREER_DATA_DIR}/config.json`. If it already exists, read it and offer to update fields rather than overwriting.
 
 Fields:
 
@@ -58,21 +76,25 @@ Use AskUserQuestion for binary/enum fields. Free-text otherwise. Validate path e
 
 Write the JSON. Confirm with the user before overwriting an existing config.
 
-#### 2b. Populate ground-truth
+#### 2c. Populate ground-truth
 
 Invoke the `ground-truth` skill in **bulk-edit** mode. It walks the user through every section of `ground-truth.md`. The user may skip sections with "later" — this is expected; partial ground-truth is fine.
 
-#### 2c. Offer companion plugins
+#### 2d. Detect existing capabilities
 
-Invoke the `install-companion-plugins` skill. Strongly recommend transcription, schedule-manager, email-skills, social-feedback. Optional: decision-evaluation-framework, private-misc.
+Invoke the `detect-mcps` skill. It scans installed plugins and MCP servers, matches them against the capabilities career-os needs (email-send, transcription, calendar-and-tasks, semantic-store, social-sentiment, decision-frameworks), and writes a `capabilities` block to `${CAREER_DATA_DIR}/config.json`. The map drives the next step — capabilities already covered by an existing MCP won't be offered as companion-plugin installs.
 
-#### 2d. Print next steps
+#### 2e. Offer companion plugins
+
+Invoke the `install-companion-plugins` skill with `--only=<list>` derived from the `detect-mcps` resolution (only plugins where `via: companion-plugin` AND not yet installed). Strongly recommend transcription, schedule-manager, email-skills, social-feedback when nothing else covers them. Optional: decision-evaluation-framework, private-misc.
+
+#### 2f. Print next steps
 
 ```
 Career-OS workspace ready.
 
 Foundation set:
-- Config:       ~/.config/career-os/config.json
+- Config:       ${CAREER_DATA_DIR}/config.json
 - Ground truth: <WORKING_FOLDER>/ground-truth.md (populated)
 - Companions:   <list of installed>
 
@@ -123,5 +145,5 @@ Save to `context/profile.md` (or `context/profile.json` for salary-research). St
 ## Failure modes
 
 - **No `CLAUDE.md` in workspace** → bail with instructions to run `/career:new-workspace` first.
-- **`mkdir ~/.config/career-os` fails** → fall back to `~/.career-os/config.json` and warn the user.
+- **`mkdir -p $CAREER_DATA_DIR` fails** → fall back to `$HOME/.career-data/config.json` and warn the user that `CLAUDE_USER_DATA` / `XDG_DATA_HOME` could not be honoured.
 - **User declines all config fields** → write a minimal stub with `WORKING_FOLDER` only; downstream skills will prompt for missing values on first use.

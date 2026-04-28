@@ -21,7 +21,7 @@ Top-level company read. The first brief most users want. Other briefs (financial
 
 ### 1. Resolve config + paths
 
-Read `~/.config/career-os/config.json` for `WORKING_FOLDER`. Compute `slug` (provided or derived). Output path: `${WORKING_FOLDER}/research/companies/${slug}/company-overview.md`.
+Read `${CAREER_DATA_DIR}/config.json` for `WORKING_FOLDER`. Compute `slug` (provided or derived). Output path: `${WORKING_FOLDER}/research/companies/${slug}/company-overview.md`.
 
 If the file already exists, ask: overwrite, append, or open existing.
 
