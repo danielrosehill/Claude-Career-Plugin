@@ -1,35 +1,28 @@
 ---
-description: Generate a resume variant tailored to a specific role/JD, preserving factual accuracy.
+description: Generate a resume variant tailored to a specific role/JD. Never invents experience.
 ---
 
 # /career:tailor-resume
 
-Produce a tailored resume version for a specific application. Never invents experience.
+Single-skill command. Runs the `tailor-resume` skill.
 
-## Steps
+## Usage
 
-### 1. Inputs
+```
+/career:tailor-resume --opportunity=<slug> --company=<slug> --role=<slug>
+/career:tailor-resume --jd=<file>      --company=<slug> --role=<slug>
+/career:tailor-resume --jd-url=<url>   --company=<slug> --role=<slug>
+```
 
-- Base resume: `user-context/resume.md` (or wherever the workspace stores it — ask if unclear).
-- Job description: `$ARGUMENTS` may be a file path, URL, or a tracked slug from `data/processes.json`. Otherwise ask.
+## What it does
 
-### 2. Analyse the JD
+- Reads master resume + ground-truth + JD.
+- Surfaces JD-relevant experience; mirrors keywords *where truthful*; cuts tangential bullets.
+- Surfaces gaps (JD must-haves the user lacks) — never fabricated as bullets.
+- Writes to `resume/variants/<company>-<role>.md` with a tailoring summary at the top.
 
-Extract: must-have skills, nice-to-haves, keywords, tone, seniority signals, named technologies.
+## Notes
 
-### 3. Tailor
-
-Rewrite the base resume so that:
-
-- Bullets surface the experience most relevant to the JD.
-- Phrasing mirrors the JD's keywords **where truthful**.
-- Irrelevant content is cut or compressed.
-- **No invented experience.** If the user lacks a JD must-have, leave it out; don't fabricate.
-
-### 4. Save
-
-Write to `outputs/resume-versions/<date>-<company>-<role-slug>.md`. Include a top-of-file note summarising the tailoring choices so the user can review.
-
-### 5. Report
-
-Show the diff summary (cuts, rewrites, reorderings) and any JD requirements the user lacks — those are gaps worth addressing before applying.
+- Master resume search order: `resume/master.md`, `user-context/resume.md`, `resume.md`.
+- Style flag: `--style=concise|standard|detailed` (default standard).
+- Combine with `/career:skill-gap` to address surfaced gaps before applying.
