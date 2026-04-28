@@ -1,0 +1,14 @@
+# Caches — never commit. Re-runnable.
+cache/
+
+# Voice-capture inbox — pre-routing, often raw transcripts. Optional commit.
+inbox/
+
+# Drafts in progress — uncomment if you want them local-only.
+# drafts/
+
+# OS / editor noise
+.DS_Store
+*.swp
+.idea/
+.vscode/
