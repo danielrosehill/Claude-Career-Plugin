@@ -50,6 +50,24 @@ Plugin updates never touch workspace data.
 
 See [PLAN.md in Claude-Workspace-Reshaping-190426](https://github.com/danielrosehill/Claude-Workspace-Reshaping-190426) for the full pattern spec this plugin follows.
 
+## Bundled MCP servers
+
+The plugin ships a `.mcp.json` declaring optional MCP servers career-os skills can use. None are installed automatically — Claude Code prompts the user to enable them when the plugin first loads.
+
+| Server | Used by | Required env vars | Notes |
+| --- | --- | --- | --- |
+| `hunter` | `find-contact`, `outreach` flow | `HUNTER_API_KEY`. Optional: `HUNTER_MCP_COMMAND` (default `npx`), `HUNTER_MCP_PACKAGE` (default `hunter-mcp`) | Override `HUNTER_MCP_PACKAGE` if you use a different Hunter MCP implementation. |
+
+Other capabilities (LinkedIn outreach, email send, transcription, calendar/tasks, semantic store) are resolved at onboard time by the `detect-mcps` skill, which can either reuse an MCP you already have, install a companion plugin, or — if you point it at an aggregated MCP server — index that server's tools and dispatch through it.
+
+### Aggregated MCP servers
+
+If your MCP setup is consolidated behind a single aggregator (e.g. MCP Jungle, a personal proxy, or any router that exposes many upstream tools under one alias), you can pass that alias to `/career:onboard`. The tool inventory is captured to `${CAREER_DATA_DIR}/mcp-inventory.json` and the resolution map prefers tools served by that aggregator before suggesting new MCP installs.
+
+## Workspace environment variable
+
+Skills that write artifacts (CRM rows, briefs, drafts) default their output path to `$CAREER_WORKSPACE`, which resolves to (in order): the explicit `CAREER_WORKSPACE` env var, the `WORKING_FOLDER` field in `${CAREER_DATA_DIR}/config.json`, or `$PWD`. Set `CAREER_WORKSPACE` in your shell profile to anchor career-os to a specific workspace from any cwd.
+
 ## Sources absorbed
 
 This plugin absorbs and dedupes three prior template repos:

@@ -9,11 +9,15 @@ Five sub-skills behind one command. The end-to-end loop: research â†’ contact â†
 ## Subcommands
 
 ```
-/career:outreach find    <company> [--role=...] [--n=5] [--append-to-crm] [--lens=...]
-/career:outreach draft   <company> [--contact-rank=N | --contact="Name email"] [--template=...] [--brief-as=personal|business]
-/career:outreach send    <draft-path> [--force]
-/career:outreach log     [--company=...] [--contact=...] [--channel=...] [--template=...] [--status=sent] [--date=...] [--note=...]
-/career:outreach status  [--latest=<slug> | --row=N | --company=<slug> --contact=<name>] --status=<...> [--note=...] [--next-action=...]
+/career:outreach find         <company> [--role=...] [--n=5] [--append-to-crm] [--lens=...]
+/career:outreach find-email   <"Full Name"> <company-or-domain> [--verify] [--append-to-crm] [--lens=...]
+/career:outreach verify       <email> [--update-crm]
+/career:outreach enrich       <email> [--ad-hoc] [--no-write]
+/career:outreach bulk-verify  [--max=50] [--stale-days=90] [--filter=...] [--dry-run]
+/career:outreach draft        <company> [--contact-rank=N | --contact="Name email"] [--template=...] [--brief-as=personal|business]
+/career:outreach send         <draft-path> [--force]
+/career:outreach log          [--company=...] [--contact=...] [--channel=...] [--template=...] [--status=sent] [--date=...] [--note=...]
+/career:outreach status       [--latest=<slug> | --row=N | --company=<slug> --contact=<name>] --status=<...> [--note=...] [--next-action=...]
 ```
 
 If invoked without a subcommand, print this help and stop.
@@ -23,6 +27,10 @@ If invoked without a subcommand, print this help and stop.
 | subcommand | skill |
 | --- | --- |
 | `find` | `find-contact` |
+| `find-email` | `find-email-by-name` |
+| `verify` | `verify-email` |
+| `enrich` | `enrich-contact` |
+| `bulk-verify` | `bulk-verify-crm` |
 | `draft` | `draft-outreach` |
 | `send` | `send-outreach` |
 | `log` | `log-outreach` |

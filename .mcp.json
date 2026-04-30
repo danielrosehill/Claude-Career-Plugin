@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "hunter": {
+      "type": "stdio",
+      "command": "${HUNTER_MCP_COMMAND:-npx}",
+      "args": ["-y", "${HUNTER_MCP_PACKAGE:-hunter-mcp}"],
+      "env": {
+        "HUNTER_API_KEY": "${HUNTER_API_KEY}"
+      }
+    }
+  }
+}

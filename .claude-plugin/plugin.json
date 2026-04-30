@@ -1,7 +1,7 @@
 {
   "name": "career",
   "displayName": "Career-OS",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Career-OS — end-to-end career operating system. Anti-loop research, outreach, recommendation, voice capture, ecosystem mapping, weekly planning, and self-healing context. Ships 4 workspace variants (career-os default + legacy career-planning / job-search / salary-research) and integrates via companion plugins (claude-transcription, schedule-manager, email-skills).",
   "author": {
     "name": "Daniel Rosehill",

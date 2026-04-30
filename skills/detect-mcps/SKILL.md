@@ -20,6 +20,7 @@ Map the capabilities the career plugin needs to whatever the user already has. A
 | `social-sentiment` | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` | `social-feedback` | no equivalent MCP — companion plugin only |
 | `decision-frameworks` | `compare-offer`, `meeting-prep` | `decision-evaluation-framework` | no equivalent MCP — companion plugin only |
 | `crm` | outreach log, opportunities | built-in markdown | optional: Airtable MCP, Attio MCP for `CRM_ADAPTER` |
+| `contact-discovery` | `find-contact`, `find-email-by-name`, `verify-email`, `enrich-contact`, `bulk-verify-crm` | bundled `hunter` MCP (this plugin's `.mcp.json`) | any MCP exposing `Domain-Search` + `Email-Finder` + `Email-Verifier` (Hunter, Apollo, etc.) |
 
 ## When to invoke
 
@@ -55,6 +56,23 @@ For each MCP server, capture: alias, scope (user / project / system), tool names
 
 If the system reminder at session start already lists deferred MCP tools (the long `mcp__<server>__<tool>` enumeration), prefer that — it's the live truth and skips a shell-out.
 
+**Aggregator preference.** If `${CAREER_DATA_DIR}/config.json` has an `MCP_AGGREGATOR.alias`, treat tools served under that alias (e.g. `mcp__jungle-personal__*`) as the highest-priority candidates when multiple MCPs match a capability. Rationale: the user has already standardised on the aggregator and adding a separate MCP would duplicate.
+
+**Inventory write-out.** Always write the full discovered tool list to `${CAREER_DATA_DIR}/mcp-inventory.json`:
+
+```json
+{
+  "captured_at": "2026-04-30",
+  "aggregator": "jungle-personal",
+  "servers": [
+    { "alias": "jungle-personal", "tools": ["mcp__jungle-personal__hunter__Domain-Search", "..."] },
+    { "alias": "todoist", "tools": ["create_task", "..."] }
+  ]
+}
+```
+
+Other career-os skills can read this file when they need to know whether a specific MCP tool is reachable without re-running discovery.
+
 ### 4. Match tools to capabilities
 
 For each capability in the table, walk the tool list and check for a matching tool name. Examples:
@@ -63,6 +81,7 @@ For each capability in the table, walk the tool list and check for a matching to
 - `transcription` → any tool matching `transcribe_audio*` or `transcribe-*`.
 - `calendar-and-tasks` → require BOTH a `create_event` tool AND a `create_task` (or `create_todoist_task`) tool, possibly across different MCPs.
 - `semantic-store` → any pair of `upsert-records` + `search-records` (or equivalent vector-db verbs).
+- `contact-discovery` → tools matching `Domain-Search` AND `Email-Finder` AND `Email-Verifier` on the same alias. Hunter is the default; the plugin's bundled `.mcp.json` declares a `hunter` server, so this capability resolves to `existing-mcp:hunter` after the user enables it (env vars: `HUNTER_API_KEY`, optional `HUNTER_MCP_PACKAGE`).
 
 If multiple candidates match (e.g. user has both `gws-personal` and `gws-business` for email), keep all of them and let the user choose during step 6.
 

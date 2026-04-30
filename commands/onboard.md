@@ -65,7 +65,7 @@ Fields:
 
 Ask the user, with these defaults pre-filled:
 
-- `WORKING_FOLDER` — auto-detected from `pwd`.
+- `WORKING_FOLDER` — auto-detected from `pwd`. This value is what skills resolve as `$CAREER_WORKSPACE` when the env var isn't set. Suggest the user export `CAREER_WORKSPACE=<path>` in their shell profile if they want to invoke career-os skills from any cwd.
 - `CONTEXT_STORE` — default `markdown`. Other options: `pinecone`, `ragie`. Tell the user `pinecone` requires the `private-misc` companion (offered later).
 - `USER_LOCATION` — required. Used by `discover-remote-friendly` and `salary-research`.
 - `PREFERRED_EMAIL_SENDER` — `email-skills:send-personal-email` or `email-skills:send-business-email`. Skip if user is not pursuing outreach.
@@ -80,15 +80,35 @@ Write the JSON. Confirm with the user before overwriting an existing config.
 
 Invoke the `ground-truth` skill in **bulk-edit** mode. It walks the user through every section of `ground-truth.md`. The user may skip sections with "later" — this is expected; partial ground-truth is fine.
 
-#### 2d. Detect existing capabilities
+#### 2d. Aggregated MCP server (optional)
 
-Invoke the `detect-mcps` skill. It scans installed plugins and MCP servers, matches them against the capabilities career-os needs (email-send, transcription, calendar-and-tasks, semantic-store, social-sentiment, decision-frameworks), and writes a `capabilities` block to `${CAREER_DATA_DIR}/config.json`. The map drives the next step — capabilities already covered by an existing MCP won't be offered as companion-plugin installs.
+Ask whether the user routes their MCPs through an aggregator (a single MCP alias that proxies many upstream tools — e.g. MCP Jungle or a personal proxy).
 
-#### 2e. Offer companion plugins
+- If yes: prompt for the alias (e.g. `jungle-personal`) and, optionally, a path to a tool-inventory dump if they have one (`--inventory=<path>`).
+- If no: skip — capability detection will scan all installed MCPs equally.
+
+Persist the answer to `${CAREER_DATA_DIR}/config.json`:
+
+```json
+{
+  "MCP_AGGREGATOR": {
+    "alias": "jungle-personal",
+    "inventory_path": "${CAREER_DATA_DIR}/mcp-inventory.json"
+  }
+}
+```
+
+If the user supplied an inventory path, copy / symlink it to `${CAREER_DATA_DIR}/mcp-inventory.json`. If not, write an empty inventory shell — `detect-mcps` will populate it from the live tool list.
+
+#### 2e. Detect existing capabilities
+
+Invoke the `detect-mcps` skill. It scans installed plugins and MCP servers, matches them against the capabilities career-os needs (email-send, transcription, calendar-and-tasks, semantic-store, social-sentiment, decision-frameworks, contact-discovery via Hunter), and writes a `capabilities` block to `${CAREER_DATA_DIR}/config.json`. If `MCP_AGGREGATOR` is configured, tools served by that aggregator are preferred. The full tool inventory is captured to `${CAREER_DATA_DIR}/mcp-inventory.json` for later reference.
+
+#### 2f. Offer companion plugins
 
 Invoke the `install-companion-plugins` skill with `--only=<list>` derived from the `detect-mcps` resolution (only plugins where `via: companion-plugin` AND not yet installed). Strongly recommend transcription, schedule-manager, email-skills, social-feedback when nothing else covers them. Optional: decision-evaluation-framework, private-misc.
 
-#### 2f. Print next steps
+#### 2g. Print next steps
 
 ```
 Career-OS workspace ready.
