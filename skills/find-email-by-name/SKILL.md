@@ -2,7 +2,7 @@
 name: find-email-by-name
 description: Given a person's name and their company (name or domain), return Hunter's best guess at their email address with a confidence score. Use when the user already knows who they want to reach and just needs the address. Differs from find-contact (which lists candidates at a company) — this is targeted at a single named person.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, mcp__jungle-personal__hunter__Email-Finder, mcp__jungle-personal__hunter__Company-Enrichment, mcp__jungle-personal__hunter__Email-Verifier
+allowed-tools: Read, Edit, Write, mcp__gateway__hunter__Email-Finder, mcp__gateway__hunter__Company-Enrichment, mcp__gateway__hunter__Email-Verifier
 ---
 
 # Find Email By Name

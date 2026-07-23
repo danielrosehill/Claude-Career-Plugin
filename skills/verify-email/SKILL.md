@@ -2,7 +2,7 @@
 name: verify-email
 description: Validate a single email address via Hunter Email-Verifier. Use when the user has an address (handed to them, scraped, guessed) and wants a deliverability + confidence read before sending outreach. Returns Hunter's verdict (deliverable / risky / undeliverable / unknown), score, and the disposable / role / accept-all flags. Does not write to the CRM unless asked.
 disable-model-invocation: false
-allowed-tools: Read, Edit, mcp__jungle-personal__hunter__Email-Verifier
+allowed-tools: Read, Edit, mcp__gateway__hunter__Email-Verifier
 ---
 
 # Verify Email

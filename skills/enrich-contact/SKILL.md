@@ -2,7 +2,7 @@
 name: enrich-contact
 description: Enrich an existing CRM contact with Hunter Combined-Enrichment — pulls role, seniority, department, social handles, and the contact's company facts in one call. Use to flesh out a thinly-populated CRM row before drafting outreach or prepping for a meeting. Operates on an email address from the CRM; updates the row in place.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, mcp__jungle-personal__hunter__Combined-Enrichment, mcp__jungle-personal__hunter__Company-Enrichment
+allowed-tools: Read, Edit, Write, mcp__gateway__hunter__Combined-Enrichment, mcp__gateway__hunter__Company-Enrichment
 ---
 
 # Enrich Contact

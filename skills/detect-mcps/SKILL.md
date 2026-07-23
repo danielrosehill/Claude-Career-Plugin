@@ -65,7 +65,7 @@ If the system reminder at session start already lists deferred MCP tools (the lo
   "captured_at": "2026-04-30",
   "aggregator": "jungle-personal",
   "servers": [
-    { "alias": "jungle-personal", "tools": ["mcp__jungle-personal__hunter__Domain-Search", "..."] },
+    { "alias": "jungle-personal", "tools": ["mcp__gateway__hunter__Domain-Search", "..."] },
     { "alias": "todoist", "tools": ["create_task", "..."] }
   ]
 }

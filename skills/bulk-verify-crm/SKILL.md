@@ -2,7 +2,7 @@
 name: bulk-verify-crm
 description: Sweep all (or a filtered subset of) email addresses in the workspace CRM and re-verify them via Hunter Email-Verifier. Use periodically — people change jobs, addresses go stale, accept-all status changes. Updates the `verified` and `last-verified` columns in `crm/contacts.md` and prints a summary of what flipped.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, Bash(test *), mcp__jungle-personal__hunter__Email-Verifier
+allowed-tools: Read, Edit, Write, Bash(test *), mcp__gateway__hunter__Email-Verifier
 ---
 
 # Bulk Verify CRM

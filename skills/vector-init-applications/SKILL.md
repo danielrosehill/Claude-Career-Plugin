@@ -2,7 +2,7 @@
 name: vector-init-applications
 description: First-run scaffold of a vector-store namespace dedicated to application/outreach tracking. Creates the `applications` namespace in the configured index, sets the metadata schema (company, role, status, applied_date, last_touch, source_path, stage), seeds it from crm/outreach.md + crm/opportunities.md, and registers it in config. Idempotent — re-running detects existing namespace and offers reseed or skip.
 disable-model-invocation: false
-allowed-tools: Read, Write, Edit, Bash(date *), Bash(test *), mcp__jungle-personal__pinecone__describe-index, mcp__jungle-personal__pinecone__describe-index-stats, mcp__jungle-personal__pinecone__upsert-records, mcp__jungle-personal__pinecone__search-records
+allowed-tools: Read, Write, Edit, Bash(date *), Bash(test *), mcp__gateway__pinecone__describe-index, mcp__gateway__pinecone__describe-index-stats, mcp__gateway__pinecone__upsert-records, mcp__gateway__pinecone__search-records
 ---
 
 # Vector Init — Applications Namespace

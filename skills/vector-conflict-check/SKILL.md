@@ -2,7 +2,7 @@
 name: vector-conflict-check
 description: For CONTEXT_STORE=pinecone — verify the index against the local workspace. Flags vectors whose source file was deleted, renamed, or content-changed (hash mismatch), and surfaces vectors whose content contradicts current ground-truth (stale claims, closed engagements, outdated targets). Proposes deletes/re-embeds; never silently mutates the index.
 disable-model-invocation: false
-allowed-tools: Read, Write, Bash(sha256sum *), Bash(test *), Bash(date *), Bash(mkdir *), mcp__jungle-personal__pinecone__describe-index-stats, mcp__jungle-personal__pinecone__search-records
+allowed-tools: Read, Write, Bash(sha256sum *), Bash(test *), Bash(date *), Bash(mkdir *), mcp__gateway__pinecone__describe-index-stats, mcp__gateway__pinecone__search-records
 ---
 
 # Vector Conflict Check

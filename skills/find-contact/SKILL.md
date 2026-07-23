@@ -2,7 +2,7 @@
 name: find-contact
 description: Find the right person to contact at a target company using Hunter.io. Use when the user needs decision-maker / hiring-manager / founder contact details before drafting an outreach. Returns ranked candidates with confidence scores; optionally appends to the workspace CRM. Hunter MCP is required.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, Bash(test *), mcp__jungle-personal__hunter__Domain-Search, mcp__jungle-personal__hunter__Email-Finder, mcp__jungle-personal__hunter__Email-Verifier, mcp__jungle-personal__hunter__Combined-Enrichment, mcp__jungle-personal__hunter__Company-Enrichment
+allowed-tools: Read, Edit, Write, Bash(test *), mcp__gateway__hunter__Domain-Search, mcp__gateway__hunter__Email-Finder, mcp__gateway__hunter__Email-Verifier, mcp__gateway__hunter__Combined-Enrichment, mcp__gateway__hunter__Company-Enrichment
 ---
 
 # Find Contact
