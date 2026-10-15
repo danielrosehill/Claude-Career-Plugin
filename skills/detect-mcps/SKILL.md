@@ -14,7 +14,7 @@ Map the capabilities the career plugin needs to whatever the user already has. A
 | Capability | What career-os does with it | Default companion | Acceptable existing MCPs |
 | --- | --- | --- | --- |
 | `email-send` | `/career:outreach send` | `email-skills` | any MCP exposing a `send-email` / `send_email` tool (Gmail, Resend, Postmark, generic SMTP, gws-personal, gws-business) |
-| `transcription` | `/career:capture` voice ingest | `claude-transcription` | any MCP exposing `transcribe_audio` / `transcribe-*` (gemini-transcription, AssemblyAI MCP, OpenAI-whisper MCP) |
+| `transcription` | `/career:capture` voice ingest | `transcription-pipeline` | any MCP exposing `transcribe_audio` / `transcribe-*` (gemini-transcription, AssemblyAI MCP, OpenAI-whisper MCP) |
 | `calendar-and-tasks` | `/career:plan week`, `/career:meeting-prep`, route-capture | `schedule-manager` | any MCP exposing `create_event` AND `create_task` (gws + Todoist, Google Calendar MCP + a task system) |
 | `semantic-store` | `/career:semantic-recall`, `pinecone-sync` | `private-misc` (sets up Pinecone) | any MCP exposing `upsert-records` + `search-records` (pinecone, weaviate, qdrant, ragie) |
 | `social-sentiment` | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` | `social-feedback` | no equivalent MCP — companion plugin only |

@@ -49,7 +49,7 @@ Each maps to a different route (see `route-capture` skill for details).
 
 ## Prerequisites
 
-- Audio path: `claude-transcription` companion plugin installed (run `/career:onboard`).
+- Audio path: `transcription-pipeline` companion plugin installed (run `/career:onboard`).
 - Schedule routes: `schedule-manager` companion (falls back to markdown queue if missing).
 - Drafts: requires `ground-truth.md` (warns if thin).
 

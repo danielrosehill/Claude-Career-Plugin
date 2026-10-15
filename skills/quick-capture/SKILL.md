@@ -54,7 +54,7 @@ tag: {{if --tag}}
 
 #### Audio input
 
-Delegate to `claude-transcription:transcribe-gemini-cleaned` (or assemblyai per config). Same inbox format as `voice-ingest`, but mark `input-type: voice-quick`.
+Delegate to `transcription-pipeline:transcribe-gemini-cleaned` (or assemblyai per config). Same inbox format as `voice-ingest`, but mark `input-type: voice-quick`.
 
 ### 3. Classify
 

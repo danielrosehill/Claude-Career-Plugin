@@ -27,17 +27,17 @@ Take an audio file → transcript → classification → proposed route. Output 
 
 ### 1. Resolve config + paths
 
-`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`, `companions.transcription` (e.g. `claude-transcription`).
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`, `companions.transcription` (e.g. `transcription-pipeline`).
 
-If `companions.transcription` is missing, bail with: "no transcription companion installed — run `/career:onboard` and accept the transcription companion offer, or install `claude-transcription` manually."
+If `companions.transcription` is missing, bail with: "no transcription companion installed — run `/career:onboard` and accept the transcription companion offer, or install `transcription-pipeline` manually."
 
 Validate `<audio-path>` exists. Bail otherwise.
 
 ### 2. Transcribe
 
 Delegate to the companion plugin's transcription skill. Default mapping:
-- `engine=assemblyai` → `claude-transcription:transcribe-assemblyai`
-- `engine=gemini` (default) → `claude-transcription:transcribe-gemini-cleaned`
+- `engine=assemblyai` → `transcription-pipeline:transcribe-assemblyai`
+- `engine=gemini` (default) → `transcription-pipeline:transcribe-gemini-cleaned`
 
 Pass through `--preset` if provided.
 
