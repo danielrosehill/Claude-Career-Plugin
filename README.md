@@ -60,6 +60,8 @@ The plugin ships a `.mcp.json` declaring optional MCP servers career-os skills c
 
 Other capabilities (LinkedIn outreach, email send, transcription, calendar/tasks, semantic store) are resolved at onboard time by the `detect-mcps` skill, which can either reuse an MCP you already have, install a companion plugin, or — if you point it at an aggregated MCP server — index that server's tools and dispatch through it.
 
+The semantic store (`/career:context sync` → `memory-sync`, `semantic-recall`, `vector-init-applications`, `vector-conflict-check`) uses the `memory` upstream on the MCP gateway (tools `mcp__gateway__memory__*`) when `CONTEXT_STORE=memory`. Without it, `CONTEXT_STORE=markdown` (the default) and recall falls back to grep over the workspace. Until 2.3.0 this was Pinecone; `pinecone-sync` is now `memory-sync`.
+
 ### Aggregated MCP servers
 
 If your MCP setup is consolidated behind a single aggregator (e.g. MCP Jungle, a personal proxy, or any router that exposes many upstream tools under one alias), you can pass that alias to `/career:onboard`. The tool inventory is captured to `${CAREER_DATA_DIR}/mcp-inventory.json` and the resolution map prefers tools served by that aggregator before suggesting new MCP installs.

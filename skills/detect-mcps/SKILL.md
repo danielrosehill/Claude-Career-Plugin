@@ -16,7 +16,7 @@ Map the capabilities the career plugin needs to whatever the user already has. A
 | `email-send` | `/career:outreach send` | `email-skills` | any MCP exposing a `send-email` / `send_email` tool (Gmail, Resend, Postmark, generic SMTP, gws-personal, gws-business) |
 | `transcription` | `/career:capture` voice ingest | `transcription-pipeline` | any MCP exposing `transcribe_audio` / `transcribe-*` (gemini-transcription, AssemblyAI MCP, OpenAI-whisper MCP) |
 | `calendar-and-tasks` | `/career:plan week`, `/career:meeting-prep`, route-capture | `schedule-manager` | any MCP exposing `create_event` AND `create_task` (gws + Todoist, Google Calendar MCP + a task system) |
-| `semantic-store` | `/career:semantic-recall`, `pinecone-sync` | `private-misc` (sets up Pinecone) | any MCP exposing `upsert-records` + `search-records` (pinecone, weaviate, qdrant, ragie) |
+| `semantic-store` | `/career:semantic-recall`, `memory-sync` | none — markdown fallback | the `memory` upstream on the MCP gateway (`mcp__gateway__memory__recall` + `remember` + `forget` + `list_memories`) |
 | `social-sentiment` | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` | `social-feedback` | no equivalent MCP — companion plugin only |
 | `decision-frameworks` | `compare-offer`, `meeting-prep` | `decision-evaluation-framework` | no equivalent MCP — companion plugin only |
 | `crm` | outreach log, opportunities | built-in markdown | optional: Airtable MCP, Attio MCP for `CRM_ADAPTER` |
@@ -110,7 +110,7 @@ capability           | candidate                          | action
 email-send           | gws-personal (send_email)          | reuse existing MCP? [Y/n]
 transcription        | none                               | install claude-transcription? [Y/n]
 calendar-and-tasks   | gws-personal + Todoist MCP         | reuse both? [Y/n]
-semantic-store       | pinecone (search-records, upsert)  | reuse existing MCP? [Y/n]
+semantic-store       | gateway memory (recall, remember)  | reuse existing MCP? [Y/n]
 social-sentiment     | none                               | install social-feedback? [Y/n]
 decision-frameworks  | decision-evaluation-framework      | already installed
 ```
@@ -127,7 +127,7 @@ Update `${CAREER_DATA_DIR}/config.json` with a `capabilities` block:
     "email-send":          { "via": "existing-mcp", "alias": "gws-personal", "tool": "send_email" },
     "transcription":       { "via": "companion-plugin", "plugin": "claude-transcription" },
     "calendar-and-tasks":  { "via": "existing-mcp", "calendar": { "alias": "gws-personal", "tool": "create_event" }, "tasks": { "alias": "todoist", "tool": "create_task" } },
-    "semantic-store":      { "via": "existing-mcp", "alias": "pinecone", "search-tool": "search-records", "upsert-tool": "upsert-records" },
+    "semantic-store":      { "via": "existing-mcp", "alias": "gateway-memory", "search-tool": "mcp__gateway__memory__recall", "upsert-tool": "mcp__gateway__memory__remember", "namespace": "career-workspace" },
     "social-sentiment":    { "via": "companion-plugin", "plugin": "social-feedback" },
     "decision-frameworks": { "via": "companion-plugin", "plugin": "decision-evaluation-framework" },
     "crm":                 { "via": "builtin-markdown" }

@@ -1,6 +1,6 @@
 ---
 name: install-companion-plugins
-description: Offer to install Claude Code plugins that complement the career plugin. Use during /career:onboard, or whenever the user wants to enable a downstream capability (transcription for voice ingest, schedule-manager for calendar/tasks, email-skills for outreach send, social-feedback for company sentiment research, decision-evaluation-framework for offer comparisons, private-misc for Pinecone wiring). Lists each, explains what it unlocks in the career plugin, and lets the user accept/decline per plugin.
+description: Offer to install Claude Code plugins that complement the career plugin. Use during /career:onboard, or whenever the user wants to enable a downstream capability (transcription for voice ingest, schedule-manager for calendar/tasks, email-skills for outreach send, social-feedback for company sentiment research, decision-evaluation-framework for offer comparisons). Semantic recall needs no companion — it uses the `memory` upstream on the MCP gateway when present (see detect-mcps). Lists each, explains what it unlocks in the career plugin, and lets the user accept/decline per plugin.
 disable-model-invocation: false
 allowed-tools: Bash(claude plugin *), Bash(claude marketplace *), Read
 ---
@@ -18,7 +18,6 @@ The career plugin deliberately does not reimplement transcription, scheduling, e
 | `email-skills` | Send outreach emails from personal or business address. | `send-outreach` |
 | `social-feedback` | Reddit / HN / Trustpilot / YouTube discourse for company sentiment. | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` |
 | `decision-evaluation-framework` | Multi-lens evaluation of offers, pivots, big career calls. | `compare-offer`, optional in `meeting-prep` |
-| `private-misc` | Pinecone MCP wiring for semantic context recall. | Stage 8 `pinecone-sync`, `semantic-recall` |
 
 ## When to invoke
 
@@ -38,7 +37,7 @@ For each not-installed plugin, show:
 
 - Name.
 - One-line "what it unlocks here."
-- Recommendation level: **strongly recommended** (transcription, schedule-manager, email-skills, social-feedback) or **optional** (decision-evaluation-framework, private-misc).
+- Recommendation level: **strongly recommended** (transcription, schedule-manager, email-skills, social-feedback) or **optional** (decision-evaluation-framework).
 
 Use `AskUserQuestion` per plugin: `Install {{plugin}}? (yes / no / later)`.
 
@@ -61,7 +60,6 @@ After install, several companion plugins need their own onboarding:
 - `email-skills` → no setup, uses ambient SMTP / Resend env.
 - `social-feedback` → no setup.
 - `decision-evaluation-framework` → `/decision-evaluation-framework:onboard`
-- `private-misc` → `/private-misc:personal-context-injection`
 
 Offer to run each one now or later.
 
@@ -76,8 +74,7 @@ For each installed plugin, persist a flag in `${CAREER_DATA_DIR}/config.json` un
     "schedule": true,
     "email": true,
     "social": false,
-    "decision": false,
-    "pinecone": false
+    "decision": false
   }
 }
 ```

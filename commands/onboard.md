@@ -50,15 +50,14 @@ Fields:
   "SECONDARY_EMAIL_SENDER": null,
   "USER_LOCATION": null,
   "RESEARCH_MODEL": "claude",
-  "PINECONE_INDEX": null,
+  "MEMORY_NAMESPACE": null,
   "CRM_ADAPTER": "markdown",
   "companions": {
     "transcription": false,
     "schedule": false,
     "email": false,
     "social": false,
-    "decision": false,
-    "pinecone": false
+    "decision": false
   }
 }
 ```
@@ -66,7 +65,7 @@ Fields:
 Ask the user, with these defaults pre-filled:
 
 - `WORKING_FOLDER` — auto-detected from `pwd`. This value is what skills resolve as `$CAREER_WORKSPACE` when the env var isn't set. Suggest the user export `CAREER_WORKSPACE=<path>` in their shell profile if they want to invoke career-os skills from any cwd.
-- `CONTEXT_STORE` — default `markdown`. Other options: `pinecone`, `ragie`. Tell the user `pinecone` requires the `private-misc` companion (offered later).
+- `CONTEXT_STORE` — default `markdown`. Other option: `memory` — the `memory` upstream on the MCP gateway (tools `mcp__gateway__memory__*`); offer it only if those tools resolve via `ToolSearch`. If chosen, also set `MEMORY_NAMESPACE` (default `career-workspace`; a dedicated namespace, not one that holds hand-written personal memories) and run `/career:memory-sync` once onboarding is done.
 - `USER_LOCATION` — required. Used by `discover-remote-friendly` and `salary-research`.
 - `PREFERRED_EMAIL_SENDER` — `email-skills:send-personal-email` or `email-skills:send-business-email`. Skip if user is not pursuing outreach.
 - `RESEARCH_MODEL` — default `claude`. Options: `deepseek-pro`, `deepseek-flash`. Cost optimisation; can change later.
@@ -106,7 +105,7 @@ Invoke the `detect-mcps` skill. It scans installed plugins and MCP servers, matc
 
 #### 2f. Offer companion plugins
 
-Invoke the `install-companion-plugins` skill with `--only=<list>` derived from the `detect-mcps` resolution (only plugins where `via: companion-plugin` AND not yet installed). Strongly recommend transcription, schedule-manager, email-skills, social-feedback when nothing else covers them. Optional: decision-evaluation-framework, private-misc.
+Invoke the `install-companion-plugins` skill with `--only=<list>` derived from the `detect-mcps` resolution (only plugins where `via: companion-plugin` AND not yet installed). Strongly recommend transcription, schedule-manager, email-skills, social-feedback when nothing else covers them. Optional: decision-evaluation-framework.
 
 #### 2g. Print next steps
 

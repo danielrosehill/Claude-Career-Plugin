@@ -1,10 +1,10 @@
 ---
-description: Cost-routing + semantic-recall management. Sync the workspace into Pinecone, query it, or inspect the routing decision for a given task.
+description: Cost-routing + semantic-recall management. Sync the workspace into the gateway `memory` server, query it, or inspect the routing decision for a given task.
 ---
 
 # /career:context
 
-Stage 8 wiring: model routing + semantic recall. Most users won't run this directly — `pinecone-sync` is the only common manual call (after a major workspace edit). The other subcommands are diagnostic.
+Stage 8 wiring: model routing + semantic recall. Most users won't run this directly — `memory-sync` is the only common manual call (after a major workspace edit). The other subcommands are diagnostic.
 
 ## Subcommands
 
@@ -20,7 +20,7 @@ If invoked without a subcommand, print this help and stop.
 
 | subcommand | skill |
 | --- | --- |
-| `sync`   | `pinecone-sync` |
+| `sync`   | `memory-sync` |
 | `recall` | `semantic-recall` |
 | `route`  | `research-router` |
 
@@ -29,4 +29,4 @@ If invoked without a subcommand, print this help and stop.
 - `sync` is idempotent. Run after a heavy ground-truth edit, a discovery run, or weekly.
 - `recall` is mostly used internally by other skills; the command exposes it for debugging ("is recall finding the row I think it should?").
 - `route` is purely diagnostic — it returns a decision, doesn't actually execute the task.
-- Requires `private-misc` companion plugin for Pinecone MCP wiring.
+- `sync` and `recall` (memory backend) require the `memory` upstream on the MCP gateway (tools `mcp__gateway__memory__*`) and `CONTEXT_STORE=memory`. Without it, `recall` falls back to grep over the workspace.

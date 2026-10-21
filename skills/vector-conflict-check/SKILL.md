@@ -1,8 +1,8 @@
 ---
 name: vector-conflict-check
-description: For CONTEXT_STORE=pinecone — verify the index against the local workspace. Flags vectors whose source file was deleted, renamed, or content-changed (hash mismatch), and surfaces vectors whose content contradicts current ground-truth (stale claims, closed engagements, outdated targets). Proposes deletes/re-embeds; never silently mutates the index.
+description: For CONTEXT_STORE=memory — verify the workspace namespace(s) on the gateway `memory` server (tools mcp__gateway__memory__*) against the local workspace. Flags memories whose source file was deleted, renamed, or content-changed (hash mismatch), and surfaces memories whose content contradicts current ground-truth (stale claims, closed engagements, outdated targets). Proposes deletes/re-stores; never silently mutates the store.
 disable-model-invocation: false
-allowed-tools: Read, Write, Bash(sha256sum *), Bash(test *), Bash(date *), Bash(mkdir *), mcp__gateway__pinecone__describe-index-stats, mcp__gateway__pinecone__search-records
+allowed-tools: Read, Write, Bash(sha256sum *), Bash(test *), Bash(date *), Bash(mkdir *), mcp__gateway__memory__list_namespaces, mcp__gateway__memory__list_memories, mcp__gateway__memory__recall, mcp__gateway__memory__update_memory, mcp__gateway__memory__forget
 ---
 
 # Vector Conflict Check
@@ -10,39 +10,39 @@ allowed-tools: Read, Write, Bash(sha256sum *), Bash(test *), Bash(date *), Bash(
 ## When to run
 
 - After bulk edits to ground-truth or CRM.
-- Periodically (weekly) when running on Pinecone.
+- Periodically (weekly) when running on the `memory` backend.
 - Before relying on `semantic-recall` for high-stakes calls (offer comparisons, pivot decisions).
 
 ## Procedure
 
 ### 1. Resolve config + guard
 
-`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`, `CONTEXT_STORE`, `PINECONE_INDEX`. Bail if `CONTEXT_STORE != pinecone`.
+`${CAREER_DATA_DIR}/config.json` → `WORKING_FOLDER`, `CONTEXT_STORE`, `MEMORY_NAMESPACE`, `vector_namespaces`. Bail if `CONTEXT_STORE != memory` (a legacy `pinecone` value counts as `memory`).
 
-### 2. Pull index inventory
+### 2. Pull namespace inventory
 
-Use the Pinecone MCP to enumerate vector IDs + metadata for the configured index. Each vector should carry metadata: `source_path`, `content_hash`, `embedded_at`, `namespace` (set by `pinecone-sync`).
+Page through `list_memories` (limit 100, increasing `offset`) for `MEMORY_NAMESPACE` and the applications namespace if configured. Each memory should carry the tags `memory-sync` writes: `path:` (or `source_path:`), `sha256:` (or `source_row_hash:`), plus its `source` line with the sync date. Cross-check against `.memory-sync.json`: an id in the namespace but not the manifest is an orphan.
 
-If metadata is missing on a meaningful fraction of vectors, bail with: "index lacks source-path metadata — run `/career:pinecone-sync --reindex` first."
+If tags are missing on a meaningful fraction of memories, bail with: "namespace lacks source-path tags — run `/career:memory-sync --full` first."
 
 ### 3. File-level checks
 
-For each vector:
+For each memory:
 
-- **Source-deleted** → file path no longer exists in `WORKING_FOLDER`. Propose vector delete.
-- **Source-renamed** → no exact-path match but a same-hash file exists elsewhere. Propose metadata update (cheap) over delete+re-embed (expensive).
-- **Content-drift** → file exists at same path; sha256 mismatch with `content_hash` metadata. Propose re-embed (delete + upsert via `pinecone-sync`).
+- **Source-deleted** → file path no longer exists in `WORKING_FOLDER`. Propose `forget`.
+- **Source-renamed** → no exact-path match but a same-hash file exists elsewhere. Propose a tag update via `update_memory` (cheap) over forget+re-store.
+- **Content-drift** → file exists at same path; sha256 mismatch with `content_hash` metadata. Propose re-store (forget + remember via `memory-sync`).
 - **Clean** → path matches, hash matches. No action.
 
 ### 4. Semantic conflict checks
 
-Read `${WORKING_FOLDER}/ground-truth.md` and extract assertion-shaped lines (looking-for, hard-constraints, location, currency, current-stage). For each assertion, search the vector index (`search-records`) with the assertion as query, top_k=10. For matches with high similarity (≥0.85) **but** semantic contradiction, flag.
+Read `${WORKING_FOLDER}/ground-truth.md` and extract assertion-shaped lines (looking-for, hard-constraints, location, currency, current-stage). For each assertion, `recall` with the assertion as query, `namespaces` = the workspace namespace(s) only, limit=10. For matches with high similarity (≥0.85) **but** semantic contradiction, flag.
 
 Heuristic contradictions to detect (let the model judge, no regex needed):
 
-- Vector says "looking for full-time" while ground-truth says "consulting only".
-- Vector says "active engagement with X" while CRM marks X as `closed`.
-- Vector contains a location/currency that no longer matches ground-truth.
+- Memory says "looking for full-time" while ground-truth says "consulting only".
+- Memory says "active engagement with X" while CRM marks X as `closed`.
+- Memory contains a location/currency that no longer matches ground-truth.
 
 ### 5. Write findings
 
@@ -52,22 +52,22 @@ Heuristic contradictions to detect (let the model judge, no regex needed):
 # Vector conflicts — {{date}}
 
 ## File-level
-- DELETE  vec_id=...  source=research/companies/acme/...  reason=source-deleted
-- REEMBED vec_id=...  source=ground-truth.md              reason=hash mismatch (last embedded 2026-01-12)
-- RENAME  vec_id=...  source=domain-notes/foo.md → bar.md reason=path moved
+- FORGET  mem_id=...  source=research/companies/acme/...  reason=source-deleted
+- RESTORE mem_id=...  source=ground-truth.md              reason=hash mismatch (last embedded 2026-01-12)
+- RENAME  mem_id=...  source=domain-notes/foo.md → bar.md reason=path moved
 
 ## Semantic
-- vec_id=...  excerpt="…still in talks with Acme…"  conflicts with: crm/companies.md:Acme=closed (2026-02-14)
+- mem_id=...  excerpt="…still in talks with Acme…"  conflicts with: crm/companies.md:Acme=closed (2026-02-14)
 
 ## Proposed actions
-- 12 deletes, 3 re-embeds, 1 rename, 4 semantic flags for user review
+- 12 forgets, 3 re-stores, 1 rename, 4 semantic flags for user review
 ```
 
 ### 6. Apply (with explicit confirm)
 
-`AskUserQuestion` per action class (delete batch / re-embed batch / rename batch / semantic flags). Semantic flags never auto-resolve — they're for the user to decide whether to update ground-truth, update the source doc, or keep both views.
+`AskUserQuestion` per action class (forget batch / re-store batch / rename batch / semantic flags). Semantic flags never auto-resolve — they're for the user to decide whether to update ground-truth, update the source doc, or keep both views.
 
-Re-embeds delegate to `pinecone-sync --paths=<list>`.
+Re-stores delegate to `memory-sync --paths=<list>`.
 
 ## Idempotency
 
@@ -75,6 +75,6 @@ Re-running after a clean apply produces an empty findings file (or skips writing
 
 ## Failure modes
 
-- **Pinecone MCP missing** → bail with: "install via `/career:detect-mcps` or `/career:install-companion-plugins --only=private-misc`."
-- **Index empty** → exit cleanly with "no vectors to check."
+- **`memory` MCP missing** (tools `mcp__gateway__memory__*` don't resolve via `ToolSearch`) → bail with: "no `memory` MCP available — run `/career:detect-mcps`."
+- **Namespace empty** → exit cleanly with "no memories to check."
 - **Network error mid-scan** → write partial findings, mark as `incomplete: true` in frontmatter.

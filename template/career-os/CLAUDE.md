@@ -28,7 +28,7 @@ The plugin commands are global (`/career:*`). This directory holds **only data**
 Foundation:
 - `/career:onboard` — first-run setup; populates ground-truth + config.
 - `/career:ground-truth` — read/edit the source-of-truth doc.
-- `/career:install-companion-plugins` — offer to install transcription, schedule, email, social, decision-eval, pinecone wiring.
+- `/career:install-companion-plugins` — offer to install transcription, schedule, email, social, decision-eval.
 
 Research:
 - `/career:research-company <name>` — orchestrator over six briefs.
