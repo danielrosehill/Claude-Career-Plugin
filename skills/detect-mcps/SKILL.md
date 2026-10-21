@@ -15,7 +15,7 @@ Map the capabilities the career plugin needs to whatever the user already has. A
 | --- | --- | --- | --- |
 | `email-send` | `/career:outreach send` | `email-skills` | any MCP exposing a `send-email` / `send_email` tool (Gmail, Resend, Postmark, generic SMTP, gws-personal, gws-business) |
 | `transcription` | `/career:capture` voice ingest | `transcription-pipeline` | any MCP exposing `transcribe_audio` / `transcribe-*` (gemini-transcription, AssemblyAI MCP, OpenAI-whisper MCP) |
-| `calendar-and-tasks` | `/career:plan week`, `/career:meeting-prep`, route-capture | `schedule-manager` | any MCP exposing `create_event` AND `create_task` (gws + Todoist, Google Calendar MCP + a task system) |
+| `calendar-and-tasks` | `/career:plan week`, `/career:meeting-prep`, route-capture | `schedule-manager` | any MCP exposing `create_event` (or gws `manage_event`) AND `create_task` (or gws `manage_task`) (gws + Todoist, Google Calendar MCP + a task system) |
 | `semantic-store` | `/career:semantic-recall`, `memory-sync` | none — markdown fallback | the `memory` upstream on the MCP gateway (`mcp__gateway__memory__recall` + `remember` + `forget` + `list_memories`) |
 | `social-sentiment` | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` | `social-feedback` | no equivalent MCP — companion plugin only |
 | `decision-frameworks` | `compare-offer`, `meeting-prep` | `decision-evaluation-framework` | no equivalent MCP — companion plugin only |
@@ -79,7 +79,7 @@ For each capability in the table, walk the tool list and check for a matching to
 
 - `email-send` → any tool whose name contains `send_email` or `send-email`. Record the matching MCP alias as a candidate.
 - `transcription` → any tool matching `transcribe_audio*` or `transcribe-*`.
-- `calendar-and-tasks` → require BOTH a `create_event` tool AND a `create_task` (or `create_todoist_task`) tool, possibly across different MCPs.
+- `calendar-and-tasks` → require BOTH a `create_event` (or `manage_event`, the Google Workspace MCP's consolidated create/update/delete tool) tool AND a `create_task` (or `create_todoist_task`, or `manage_task`) tool, possibly across different MCPs.
 - `semantic-store` → any pair of `upsert-records` + `search-records` (or equivalent vector-db verbs).
 - `contact-discovery` → tools matching `Domain-Search` AND `Email-Finder` AND `Email-Verifier` on the same alias. Hunter is the default; the plugin's bundled `.mcp.json` declares a `hunter` server, so this capability resolves to `existing-mcp:hunter` after the user enables it (env vars: `HUNTER_API_KEY`, optional `HUNTER_MCP_PACKAGE`).
 
@@ -126,7 +126,7 @@ Update `${CAREER_DATA_DIR}/config.json` with a `capabilities` block:
   "capabilities": {
     "email-send":          { "via": "existing-mcp", "alias": "gws-personal", "tool": "send_email" },
     "transcription":       { "via": "companion-plugin", "plugin": "claude-transcription" },
-    "calendar-and-tasks":  { "via": "existing-mcp", "calendar": { "alias": "gws-personal", "tool": "create_event" }, "tasks": { "alias": "todoist", "tool": "create_task" } },
+    "calendar-and-tasks":  { "via": "existing-mcp", "calendar": { "alias": "gws-personal", "tool": "manage_event", "action": "create" }, "tasks": { "alias": "todoist", "tool": "create_task" } },
     "semantic-store":      { "via": "existing-mcp", "alias": "gateway-memory", "search-tool": "mcp__gateway__memory__recall", "upsert-tool": "mcp__gateway__memory__remember", "namespace": "career-workspace" },
     "social-sentiment":    { "via": "companion-plugin", "plugin": "social-feedback" },
     "decision-frameworks": { "via": "companion-plugin", "plugin": "decision-evaluation-framework" },
