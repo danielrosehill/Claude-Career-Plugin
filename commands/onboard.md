@@ -83,7 +83,7 @@ Invoke the `ground-truth` skill in **bulk-edit** mode. It walks the user through
 
 Ask whether the user routes their MCPs through an aggregator (a single MCP alias that proxies many upstream tools — e.g. MCP Jungle or a personal proxy).
 
-- If yes: prompt for the alias (e.g. `jungle-personal`) and, optionally, a path to a tool-inventory dump if they have one (`--inventory=<path>`).
+- If yes: prompt for the alias (e.g. `gateway`, which serves tools as `mcp__gateway__<server>__<tool>`) and, optionally, a path to a tool-inventory dump if they have one (`--inventory=<path>`).
 - If no: skip — capability detection will scan all installed MCPs equally.
 
 Persist the answer to `${CAREER_DATA_DIR}/config.json`:
@@ -91,7 +91,7 @@ Persist the answer to `${CAREER_DATA_DIR}/config.json`:
 ```json
 {
   "MCP_AGGREGATOR": {
-    "alias": "jungle-personal",
+    "alias": "gateway",
     "inventory_path": "${CAREER_DATA_DIR}/mcp-inventory.json"
   }
 }

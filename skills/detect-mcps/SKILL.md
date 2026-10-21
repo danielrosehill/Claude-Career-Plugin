@@ -56,16 +56,16 @@ For each MCP server, capture: alias, scope (user / project / system), tool names
 
 If the system reminder at session start already lists deferred MCP tools (the long `mcp__<server>__<tool>` enumeration), prefer that — it's the live truth and skips a shell-out.
 
-**Aggregator preference.** If `${CAREER_DATA_DIR}/config.json` has an `MCP_AGGREGATOR.alias`, treat tools served under that alias (e.g. `mcp__jungle-personal__*`) as the highest-priority candidates when multiple MCPs match a capability. Rationale: the user has already standardised on the aggregator and adding a separate MCP would duplicate.
+**Aggregator preference.** If `${CAREER_DATA_DIR}/config.json` has an `MCP_AGGREGATOR.alias`, treat tools served under that alias (e.g. `mcp__gateway__*`) as the highest-priority candidates when multiple MCPs match a capability. Rationale: the user has already standardised on the aggregator and adding a separate MCP would duplicate.
 
 **Inventory write-out.** Always write the full discovered tool list to `${CAREER_DATA_DIR}/mcp-inventory.json`:
 
 ```json
 {
   "captured_at": "2026-04-30",
-  "aggregator": "jungle-personal",
+  "aggregator": "gateway",
   "servers": [
-    { "alias": "jungle-personal", "tools": ["mcp__gateway__hunter__Domain-Search", "..."] },
+    { "alias": "gateway", "tools": ["mcp__gateway__hunter__Domain-Search", "..."] },
     { "alias": "todoist", "tools": ["create_task", "..."] }
   ]
 }
