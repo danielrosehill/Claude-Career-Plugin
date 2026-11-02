@@ -13,7 +13,7 @@ The career plugin deliberately does not reimplement transcription, scheduling, e
 
 | Plugin | What it unlocks in career-os | Used by |
 | --- | --- | --- |
-| `transcription-pipeline` | Voice-memo ingest pipeline (AssemblyAI / Gemini transcribers). | `voice-ingest`, `capture`, retrospectives |
+| `transcription-pipeline` | Voice-memo ingest pipeline (OpenRouter/Gemini Flash, AssemblyAI, Gemini, local Whisper/Parakeet). | `voice-ingest`, `capture`, retrospectives |
 | `schedule-manager` | Google Calendar + Todoist for tasks and meeting blocks. | `weekly-plan`, `meeting-prep`, `route-capture` |
 | `email-skills` | Send outreach emails from personal or business address. | `send-outreach` |
 | `social-feedback` | Reddit / HN / Trustpilot / YouTube discourse for company sentiment. | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` |
@@ -55,7 +55,7 @@ If the marketplace alias differs (e.g. namespaced plugins under a vendor prefix)
 
 After install, several companion plugins need their own onboarding:
 
-- `transcription-pipeline` → `/transcription-pipeline:configure`
+- `transcription-pipeline` → `/transcription-pipeline:setup`
 - `schedule-manager` → `/schedule-manager:onboard`
 - `email-skills` → no setup, uses ambient SMTP / Resend env.
 - `social-feedback` → no setup.
@@ -84,10 +84,10 @@ Other career skills check this map before delegating — if a companion is missi
 ### 6. Print summary
 
 ```
-Installed: claude-transcription, schedule-manager, email-skills
+Installed: transcription-pipeline, schedule-manager, email-skills
 Skipped:   social-feedback (later)
 Already:   none
-Next:      run /transcription-pipeline:configure when ready
+Next:      run /transcription-pipeline:setup when ready
 ```
 
 ## Arguments

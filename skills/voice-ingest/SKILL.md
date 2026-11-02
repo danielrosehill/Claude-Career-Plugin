@@ -1,6 +1,6 @@
 ---
 name: voice-ingest
-description: Accept an audio file path, transcribe via the claude-transcription companion, classify the transcript (quick-note / retrospective / strategic-dump / unclear), and propose a route. Never auto-routes — always confirms with user. Lands transcript + audio link in <WORKING_FOLDER>/inbox/<YYYY-MM-DD-HHMM>.md.
+description: Accept an audio file path, transcribe via the transcription-pipeline companion, classify the transcript (quick-note / retrospective / strategic-dump / unclear), and propose a route. Never auto-routes — always confirms with user. Lands transcript + audio link in <WORKING_FOLDER>/inbox/<YYYY-MM-DD-HHMM>.md.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash(mkdir *), Bash(test *), Bash(date *), Bash(file *)
 ---
@@ -36,8 +36,8 @@ Validate `<audio-path>` exists. Bail otherwise.
 ### 2. Transcribe
 
 Delegate to the companion plugin's transcription skill. Default mapping:
-- `engine=assemblyai` → `transcription-pipeline:transcribe-assemblyai`
-- `engine=gemini` (default) → `transcription-pipeline:transcribe-gemini-cleaned`
+- `engine=assemblyai` → `transcription-pipeline:transcribe-audio` with `--backend assemblyai`
+- `engine=gemini` (default) → `transcription-pipeline:run-pipeline` (cleaned) or `transcription-pipeline:transcribe-audio` with `--backend openrouter`
 
 Pass through `--preset` if provided. If the transcription tool wants a URL rather than a path, stage the audio with `cloud-storage:stage-file` (`stage.sh <file>` → presigned URL; delete after). Don't improvise another route.
 

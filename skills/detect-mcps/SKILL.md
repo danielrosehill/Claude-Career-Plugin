@@ -14,7 +14,7 @@ Map the capabilities the career plugin needs to whatever the user already has. A
 | Capability | What career-os does with it | Default companion | Acceptable existing MCPs |
 | --- | --- | --- | --- |
 | `email-send` | `/career:outreach send` | `email-skills` | any MCP exposing a `send-email` / `send_email` tool (Gmail, Resend, Postmark, generic SMTP, gws-personal, gws-business) |
-| `transcription` | `/career:capture` voice ingest | `transcription-pipeline` | any MCP exposing `transcribe_audio` / `transcribe-*` (gemini-transcription, AssemblyAI MCP, OpenAI-whisper MCP) |
+| `transcription` | `/career:capture` voice ingest | `transcription-pipeline` | any MCP exposing `transcribe_audio` / `transcribe-*` (AssemblyAI MCP, OpenAI-whisper MCP) |
 | `calendar-and-tasks` | `/career:plan week`, `/career:meeting-prep`, route-capture | `schedule-manager` | any MCP exposing `create_event` (or gws `manage_event`) AND `create_task` (or gws `manage_task`) (gws + Todoist, Google Calendar MCP + a task system) |
 | `semantic-store` | `/career:semantic-recall`, `memory-sync` | none — markdown fallback | the `memory` upstream on the MCP gateway (`mcp__gateway__memory__recall` + `remember` + `forget` + `list_memories`) |
 | `social-sentiment` | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` | `social-feedback` | no equivalent MCP — companion plugin only |
@@ -108,7 +108,7 @@ Show a per-capability table:
 ```
 capability           | candidate                          | action
 email-send           | gws-personal (send_email)          | reuse existing MCP? [Y/n]
-transcription        | none                               | install claude-transcription? [Y/n]
+transcription        | none                               | install transcription-pipeline? [Y/n]
 calendar-and-tasks   | gws-personal + Todoist MCP         | reuse both? [Y/n]
 semantic-store       | gateway memory (recall, remember)  | reuse existing MCP? [Y/n]
 social-sentiment     | none                               | install social-feedback? [Y/n]
@@ -125,7 +125,7 @@ Update `${CAREER_DATA_DIR}/config.json` with a `capabilities` block:
 {
   "capabilities": {
     "email-send":          { "via": "existing-mcp", "alias": "gws-personal", "tool": "send_email" },
-    "transcription":       { "via": "companion-plugin", "plugin": "claude-transcription" },
+    "transcription":       { "via": "companion-plugin", "plugin": "transcription-pipeline" },
     "calendar-and-tasks":  { "via": "existing-mcp", "calendar": { "alias": "gws-personal", "tool": "manage_event", "action": "create" }, "tasks": { "alias": "todoist", "tool": "create_task" } },
     "semantic-store":      { "via": "existing-mcp", "alias": "gateway-memory", "search-tool": "mcp__gateway__memory__recall", "upsert-tool": "mcp__gateway__memory__remember", "namespace": "career-workspace" },
     "social-sentiment":    { "via": "companion-plugin", "plugin": "social-feedback" },
