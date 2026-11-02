@@ -39,7 +39,7 @@ Delegate to the companion plugin's transcription skill. Default mapping:
 - `engine=assemblyai` → `transcription-pipeline:transcribe-assemblyai`
 - `engine=gemini` (default) → `transcription-pipeline:transcribe-gemini-cleaned`
 
-Pass through `--preset` if provided.
+Pass through `--preset` if provided. If the transcription tool wants a URL rather than a path, stage the audio with `cloud-storage:stage-file` (`stage.sh <file>` → presigned URL; delete after). Don't improvise another route.
 
 Capture: transcript text, duration (if available), engine used.
 
