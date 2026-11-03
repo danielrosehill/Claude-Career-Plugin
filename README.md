@@ -1,5 +1,7 @@
 # career
 
+**Write-up:** [Claude Code plugins for non-coding work: homelab, data, media and admin](https://blog.danielrosehill.com/posts/claude-code-plugins-non-coding-workflows-xlkdop/)
+
 Claude Code plugin: career planning workflow — role logging, offer comparison, application tracking, and white-hat salary benchmarking, with planning/job-search/salary variants.
 
 Part of the [danielrosehill Claude Code marketplace](https://github.com/danielrosehill/Claude-Code-Plugins).
