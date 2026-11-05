@@ -101,7 +101,7 @@ If the user supplied an inventory path, copy / symlink it to `${CAREER_DATA_DIR}
 
 #### 2e. Detect existing capabilities
 
-Invoke the `detect-mcps` skill. It scans installed plugins and MCP servers, matches them against the capabilities career-os needs (email-send, transcription, calendar-and-tasks, semantic-store, social-sentiment, decision-frameworks, contact-discovery via Hunter), and writes a `capabilities` block to `${CAREER_DATA_DIR}/config.json`. If `MCP_AGGREGATOR` is configured, tools served by that aggregator are preferred. The full tool inventory is captured to `${CAREER_DATA_DIR}/mcp-inventory.json` for later reference.
+Invoke the `detect-mcps` skill. It scans installed plugins and MCP servers, matches them against the capabilities career-os needs (email-send, transcription, calendar-and-tasks, semantic-store, social-sentiment, decision-frameworks, contact-discovery via the Hunter REST API), and writes a `capabilities` block to `${CAREER_DATA_DIR}/config.json`. If `MCP_AGGREGATOR` is configured, tools served by that aggregator are preferred. The full tool inventory is captured to `${CAREER_DATA_DIR}/mcp-inventory.json` for later reference.
 
 #### 2f. Offer companion plugins
 

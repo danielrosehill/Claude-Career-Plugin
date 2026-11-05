@@ -1,13 +1,16 @@
 ---
 name: bulk-verify-crm
-description: Sweep all (or a filtered subset of) email addresses in the workspace CRM and re-verify them via Hunter Email-Verifier. Use periodically — people change jobs, addresses go stale, accept-all status changes. Updates the `verified` and `last-verified` columns in `crm/contacts.md` and prints a summary of what flipped.
+description: Sweep all (or a filtered subset of) email addresses in the workspace CRM and re-verify them via the Hunter email-verifier API. Use periodically — people change jobs, addresses go stale, accept-all status changes. Updates the `verified` and `last-verified` columns in `crm/contacts.md` and prints a summary of what flipped.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, Bash(test *), mcp__gateway__hunter__Email-Verifier
+allowed-tools: Read, Edit, Write, Bash(test *), Bash(with-secrets *)
 ---
 
 # Bulk Verify CRM
 
 Periodic sweep of `${CAREER_WORKSPACE}/crm/contacts.md`. Throttle-aware — Hunter's verifier consumes one credit per address.
+
+Route: Hunter REST API v2 with `curl` (no MCP). Key `HUNTER_API_KEY` is in Infisical; call as `with-secrets bash -c 'curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"'`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
+
 
 ## Inputs
 
@@ -39,7 +42,7 @@ If the work list is > 10 rows, ask the user to confirm — bulk verification has
 
 ### 4. Verify
 
-For each address in the work list, call `Email-Verifier`. Capture `result` and `score`. If a 429 comes back, stop the sweep, write everything verified so far, surface the rate-limit message.
+For each address in the work list, call `GET /v2/email-verifier?email=<address>`. Capture `data.status`, `data.result` and `data.score`. If a 429 comes back, stop the sweep, write everything verified so far, surface the rate-limit message.
 
 ### 5. Update CRM
 
@@ -78,5 +81,5 @@ Re-running picks up where the last run left off because rows verified within `--
 ## Failure modes
 
 - **No `crm/contacts.md` in the workspace** — bail with: "no CRM yet — run `find-contact <company> --append-to-crm` first."
-- **Hunter MCP not loaded** — bail; do not partial-run.
+- **`HUNTER_API_KEY` missing or 401 (`authentication_failed`)** — bail; do not partial-run.
 - **Rate limit mid-sweep** — write what you have, report the cutoff, exit cleanly.

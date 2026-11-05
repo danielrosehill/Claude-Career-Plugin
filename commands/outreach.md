@@ -49,7 +49,7 @@ If invoked without a subcommand, print this help and stop.
 
 ## Prerequisites
 
-- `find` requires the `hunter` MCP.
+- `find` calls the Hunter REST API (needs `HUNTER_API_KEY` from Infisical, run under `with-secrets`).
 - `send` requires the `email-skills` companion plugin.
 - `draft` requires populated `ground-truth.md` (warns and continues if research briefs are missing — drafts will be thinner).
 - All write to `${WORKING_FOLDER}` per `${CAREER_DATA_DIR}/config.json`.

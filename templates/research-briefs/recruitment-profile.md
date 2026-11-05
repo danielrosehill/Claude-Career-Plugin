@@ -58,7 +58,7 @@ Direction: {{growing | flat | shrinking}}. Magnitude: {{n}} over {{period}}.
 | --- | --- | --- | --- |
 | | | | |
 
-(Hunter MCP results from `find-contact` go here; this brief does not call Hunter directly.)
+(Hunter results from `find-contact` go here; this brief does not call Hunter directly.)
 
 ## Sources
 

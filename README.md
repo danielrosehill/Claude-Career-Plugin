@@ -54,11 +54,11 @@ See [PLAN.md in Claude-Workspace-Reshaping-190426](https://github.com/danielrose
 
 ## Bundled MCP servers
 
-The plugin ships a `.mcp.json` declaring optional MCP servers career-os skills can use. None are installed automatically — Claude Code prompts the user to enable them when the plugin first loads.
+The plugin ships no MCP servers. Hunter contact discovery calls the Hunter REST API directly with `curl`.
 
-| Server | Used by | Required env vars | Notes |
-| --- | --- | --- | --- |
-| `hunter` | `find-contact`, `outreach` flow | `HUNTER_API_KEY`. Optional: `HUNTER_MCP_COMMAND` (default `npx`), `HUNTER_MCP_PACKAGE` (default `hunter-mcp`) | Override `HUNTER_MCP_PACKAGE` if you use a different Hunter MCP implementation. |
+| Capability | Used by | Route |
+| --- | --- | --- |
+| Hunter | `find-contact`, `find-email-by-name`, `verify-email`, `enrich-contact`, `bulk-verify-crm` | `https://api.hunter.io/v2/...` with `HUNTER_API_KEY` (Infisical, via `with-secrets`). Free plan, so credit-aware. |
 
 Other capabilities (LinkedIn outreach, email send, transcription, calendar/tasks, semantic store) are resolved at onboard time by the `detect-mcps` skill, which can either reuse an MCP you already have, install a companion plugin, or — if you point it at an aggregated MCP server — index that server's tools and dispatch through it.
 

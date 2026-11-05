@@ -20,7 +20,7 @@ Map the capabilities the career plugin needs to whatever the user already has. A
 | `social-sentiment` | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` | `social-feedback` | no equivalent MCP — companion plugin only |
 | `decision-frameworks` | `compare-offer`, `meeting-prep` | `decision-evaluation-framework` | no equivalent MCP — companion plugin only |
 | `crm` | outreach log, opportunities | built-in markdown | optional: Airtable MCP, Attio MCP for `CRM_ADAPTER` |
-| `contact-discovery` | `find-contact`, `find-email-by-name`, `verify-email`, `enrich-contact`, `bulk-verify-crm` | bundled `hunter` MCP (this plugin's `.mcp.json`) | any MCP exposing `Domain-Search` + `Email-Finder` + `Email-Verifier` (Hunter, Apollo, etc.) |
+| `contact-discovery` | `find-contact`, `find-email-by-name`, `verify-email`, `enrich-contact`, `bulk-verify-crm` | Hunter REST API via `curl` (no MCP; `HUNTER_API_KEY`) | none needed; an MCP exposing `Domain-Search` + `Email-Finder` + `Email-Verifier` also works if the user has one |
 
 ## When to invoke
 
@@ -65,7 +65,7 @@ If the system reminder at session start already lists deferred MCP tools (the lo
   "captured_at": "2026-04-30",
   "aggregator": "gateway",
   "servers": [
-    { "alias": "gateway", "tools": ["mcp__gateway__hunter__Domain-Search", "..."] },
+    { "alias": "gateway", "tools": ["mcp__gateway__memory__recall", "..."] },
     { "alias": "todoist", "tools": ["create_task", "..."] }
   ]
 }
@@ -81,7 +81,7 @@ For each capability in the table, walk the tool list and check for a matching to
 - `transcription` → any tool matching `transcribe_audio*` or `transcribe-*`.
 - `calendar-and-tasks` → require BOTH a `create_event` (or `manage_event`, the Google Workspace MCP's consolidated create/update/delete tool) tool AND a `create_task` (or `create_todoist_task`, or `manage_task`) tool, possibly across different MCPs.
 - `semantic-store` → any pair of `upsert-records` + `search-records` (or equivalent vector-db verbs).
-- `contact-discovery` → tools matching `Domain-Search` AND `Email-Finder` AND `Email-Verifier` on the same alias. Hunter is the default; the plugin's bundled `.mcp.json` declares a `hunter` server, so this capability resolves to `existing-mcp:hunter` after the user enables it (env vars: `HUNTER_API_KEY`, optional `HUNTER_MCP_PACKAGE`).
+- `contact-discovery` → Hunter REST API via `curl`; no MCP to detect. Resolves to `{ "via": "rest", "service": "hunter" }` when `HUNTER_API_KEY` is available under `with-secrets` (check with `with-secrets --list`). If the user has an MCP exposing `Domain-Search` AND `Email-Finder` AND `Email-Verifier` on the same alias, that also works.
 
 If multiple candidates match (e.g. user has both `gws-personal` and `gws-business` for email), keep all of them and let the user choose during step 6.
 
@@ -109,7 +109,7 @@ Show a per-capability table:
 capability           | candidate                          | action
 email-send           | gws-personal (send_email)          | reuse existing MCP? [Y/n]
 transcription        | none                               | install transcription-pipeline? [Y/n]
-calendar-and-tasks   | gws-personal + Todoist MCP         | reuse both? [Y/n]
+calendar-and-tasks   | gws-personal + Todoist REST API    | reuse both? [Y/n]
 semantic-store       | gateway memory (recall, remember)  | reuse existing MCP? [Y/n]
 social-sentiment     | none                               | install social-feedback? [Y/n]
 decision-frameworks  | decision-evaluation-framework      | already installed
