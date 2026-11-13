@@ -13,6 +13,10 @@ Route: Hunter REST API v2 with `curl` (no MCP). Needs `HUNTER_API_KEY` in the en
 
 The enrichment endpoints (`/v2/combined/find`, `/v2/people/find`, `/v2/companies/find`) are from the Hunter docs and have not been tested on this account; the Free plan may not include them. On a 401/403/plan error, say so and stop.
 
+## 1. Load your settings
+
+Read `enrich-contact.md` from `$CLAUDE_USER_DATA/career/`, else `~/.claude-user-data/career/`, if it exists; its notes win over the defaults below.
+
 ## Inputs
 
 `$ARGUMENTS`:
@@ -65,7 +69,7 @@ Unless `--no-write` or `--ad-hoc`:
 
 - Update the contact row's `role` column from `position` if it was empty or "—".
 - Append `seniority=<value>, dept=<value>` to the `notes` column if missing.
-- Touch `last-touch` to today's date (DD/MM/YY per Daniel's preference).
+- Touch `last-touch` to today's date, in the user's preferred date format (default DD/MM/YY; the notes file may override).
 
 If the company row in `${CAREER_WORKSPACE}/crm/companies.md` is sparse, also fill `industry` and `size` columns (don't overwrite existing non-empty values without asking).
 
