@@ -2,14 +2,14 @@
 name: verify-email
 description: Validate a single email address via the Hunter email-verifier API. Use when the user has an address (handed to them, scraped, guessed) and wants a deliverability + confidence read before sending outreach. Returns Hunter's verdict (deliverable / risky / undeliverable / unknown), score, and the disposable / role / accept-all flags. Does not write to the CRM unless asked.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Bash(with-secrets *)
+allowed-tools: Read, Edit, Bash(curl *)
 ---
 
 # Verify Email
 
 Wraps Hunter's `email-verifier` endpoint. One address in, one verdict out.
 
-Route: Hunter REST API v2 with `curl` (no MCP). Key `HUNTER_API_KEY` is in Infisical; call as `with-secrets bash -c 'curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"'`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
+Route: Hunter REST API v2 with `curl` (no MCP). Needs `HUNTER_API_KEY` in the environment (supply it from your own secrets manager or shell); call as `curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
 
 
 ## Inputs
@@ -54,7 +54,7 @@ Load `${CAREER_WORKSPACE}/crm/contacts.md` (resolve `CAREER_WORKSPACE` per the s
 
 ## Failure modes
 
-- **`HUNTER_API_KEY` missing or 401 (`authentication_failed`)** → bail with: the key lives in Infisical; run the call under `with-secrets`.
+- **`HUNTER_API_KEY` missing or 401 (`authentication_failed`)** → bail with: `HUNTER_API_KEY` must be set in the environment; supply it from your own secrets manager or shell.
 - **429 rate limit** → surface verbatim, stop.
 - **Address not in standard format** → bail before calling Hunter.
 

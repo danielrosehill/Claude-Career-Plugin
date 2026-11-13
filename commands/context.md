@@ -29,4 +29,4 @@ If invoked without a subcommand, print this help and stop.
 - `sync` is idempotent. Run after a heavy ground-truth edit, a discovery run, or weekly.
 - `recall` is mostly used internally by other skills; the command exposes it for debugging ("is recall finding the row I think it should?").
 - `route` is purely diagnostic — it returns a decision, doesn't actually execute the task.
-- `sync` and `recall` (memory backend) require the `memory` upstream on the MCP gateway (tools `mcp__gateway__memory__*`) and `CONTEXT_STORE=memory`. Without it, `recall` falls back to grep over the workspace.
+- `sync` and `recall` (memory backend) require the `memory` upstream on the MCP gateway (tools `mcp__memory__*`) and `CONTEXT_STORE=memory`. Without it, `recall` falls back to grep over the workspace.

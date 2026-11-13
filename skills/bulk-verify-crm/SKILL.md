@@ -2,14 +2,14 @@
 name: bulk-verify-crm
 description: Sweep all (or a filtered subset of) email addresses in the workspace CRM and re-verify them via the Hunter email-verifier API. Use periodically — people change jobs, addresses go stale, accept-all status changes. Updates the `verified` and `last-verified` columns in `crm/contacts.md` and prints a summary of what flipped.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, Bash(test *), Bash(with-secrets *)
+allowed-tools: Read, Edit, Write, Bash(test *), Bash(curl *)
 ---
 
 # Bulk Verify CRM
 
 Periodic sweep of `${CAREER_WORKSPACE}/crm/contacts.md`. Throttle-aware — Hunter's verifier consumes one credit per address.
 
-Route: Hunter REST API v2 with `curl` (no MCP). Key `HUNTER_API_KEY` is in Infisical; call as `with-secrets bash -c 'curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"'`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
+Route: Hunter REST API v2 with `curl` (no MCP). Needs `HUNTER_API_KEY` in the environment (supply it from your own secrets manager or shell); call as `curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
 
 
 ## Inputs

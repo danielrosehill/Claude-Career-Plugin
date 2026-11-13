@@ -2,14 +2,14 @@
 name: find-contact
 description: Find the right person to contact at a target company using Hunter.io. Use when the user needs decision-maker / hiring-manager / founder contact details before drafting an outreach. Returns ranked candidates with confidence scores; optionally appends to the workspace CRM. Calls the Hunter REST API directly.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, Bash(test *), Bash(with-secrets *)
+allowed-tools: Read, Edit, Write, Bash(test *), Bash(curl *)
 ---
 
 # Find Contact
 
 Hunter.io wrapper. Finds people at a target company and returns ranked candidates the user can pass into `draft-outreach`.
 
-Route: Hunter REST API v2 with `curl` (no MCP). Key `HUNTER_API_KEY` is in Infisical; call as `with-secrets bash -c 'curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"'`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
+Route: Hunter REST API v2 with `curl` (no MCP). Needs `HUNTER_API_KEY` in the environment (supply it from your own secrets manager or shell); call as `curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
 
 
 ## Inputs
@@ -94,7 +94,7 @@ Then append a row per contact.
 
 ## Failure modes
 
-- **`HUNTER_API_KEY` missing or 401 (`authentication_failed`)** — bail with a one-line instruction: the key lives in Infisical; run the call under `with-secrets`.
+- **`HUNTER_API_KEY` missing or 401 (`authentication_failed`)** — bail with a one-line instruction: `HUNTER_API_KEY` must be set in the environment; supply it from your own secrets manager or shell.
 - **Domain resolution ambiguous** — present candidates, ask the user.
 - **Zero results** — print "no contacts returned for <domain>"; suggest broadening role filter.
 

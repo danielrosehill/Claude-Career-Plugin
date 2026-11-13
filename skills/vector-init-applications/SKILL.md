@@ -1,8 +1,8 @@
 ---
 name: vector-init-applications
-description: First-run scaffold of a memory namespace dedicated to application/outreach tracking. Creates a `<MEMORY_NAMESPACE>-applications` namespace on the gateway `memory` server (tools mcp__gateway__memory__*), sets the tag schema (company, role, status, applied_date, last_touch, source_path, stage), seeds it from crm/outreach.md + crm/opportunities.md, and registers it in config. Idempotent — re-running detects existing namespace and offers reseed or skip.
+description: First-run scaffold of a memory namespace dedicated to application/outreach tracking. Creates a `<MEMORY_NAMESPACE>-applications` namespace on the gateway `memory` server (tools mcp__memory__*), sets the tag schema (company, role, status, applied_date, last_touch, source_path, stage), seeds it from crm/outreach.md + crm/opportunities.md, and registers it in config. Idempotent — re-running detects existing namespace and offers reseed or skip.
 disable-model-invocation: false
-allowed-tools: Read, Write, Edit, Bash(date *), Bash(test *), mcp__gateway__memory__list_namespaces, mcp__gateway__memory__create_namespace, mcp__gateway__memory__list_memories, mcp__gateway__memory__remember, mcp__gateway__memory__forget, mcp__gateway__memory__recall
+allowed-tools: Read, Write, Edit, Bash(date *), Bash(test *), mcp__memory__list_namespaces, mcp__memory__create_namespace, mcp__memory__list_memories, mcp__memory__remember, mcp__memory__forget, mcp__memory__recall
 ---
 
 # Vector Init — Applications Namespace

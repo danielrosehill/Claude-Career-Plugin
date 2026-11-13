@@ -16,7 +16,7 @@ Map the capabilities the career plugin needs to whatever the user already has. A
 | `email-send` | `/career:outreach send` | `email-skills` | any MCP exposing a `send-email` / `send_email` tool (Gmail, Resend, Postmark, generic SMTP, gws-personal, gws-business) |
 | `transcription` | `/career:capture` voice ingest | `transcription-pipeline` | any MCP exposing `transcribe_audio` / `transcribe-*` (AssemblyAI MCP, OpenAI-whisper MCP) |
 | `calendar-and-tasks` | `/career:plan week`, `/career:meeting-prep`, route-capture | `schedule-manager` | any MCP exposing `create_event` (or gws `manage_event`) AND `create_task` (or gws `manage_task`) (gws + Todoist, Google Calendar MCP + a task system) |
-| `semantic-store` | `/career:semantic-recall`, `memory-sync` | none — markdown fallback | the `memory` upstream on the MCP gateway (`mcp__gateway__memory__recall` + `remember` + `forget` + `list_memories`) |
+| `semantic-store` | `/career:semantic-recall`, `memory-sync` | none — markdown fallback | the `memory` upstream on the MCP gateway (`mcp__memory__recall` + `remember` + `forget` + `list_memories`) |
 | `social-sentiment` | `brief-glassdoor-signal`, `brief-cultural-fit`, `brief-recruitment-profile` | `social-feedback` | no equivalent MCP — companion plugin only |
 | `decision-frameworks` | `compare-offer`, `meeting-prep` | `decision-evaluation-framework` | no equivalent MCP — companion plugin only |
 | `crm` | outreach log, opportunities | built-in markdown | optional: Airtable MCP, Attio MCP for `CRM_ADAPTER` |
@@ -56,7 +56,7 @@ For each MCP server, capture: alias, scope (user / project / system), tool names
 
 If the system reminder at session start already lists deferred MCP tools (the long `mcp__<server>__<tool>` enumeration), prefer that — it's the live truth and skips a shell-out.
 
-**Aggregator preference.** If `${CAREER_DATA_DIR}/config.json` has an `MCP_AGGREGATOR.alias`, treat tools served under that alias (e.g. `mcp__gateway__*`) as the highest-priority candidates when multiple MCPs match a capability. Rationale: the user has already standardised on the aggregator and adding a separate MCP would duplicate.
+**Aggregator preference.** If `${CAREER_DATA_DIR}/config.json` has an `MCP_AGGREGATOR.alias`, treat tools served under that alias (e.g. `mcp__<alias>__*`) as the highest-priority candidates when multiple MCPs match a capability. Rationale: the user has already standardised on the aggregator and adding a separate MCP would duplicate.
 
 **Inventory write-out.** Always write the full discovered tool list to `${CAREER_DATA_DIR}/mcp-inventory.json`:
 
@@ -65,7 +65,7 @@ If the system reminder at session start already lists deferred MCP tools (the lo
   "captured_at": "2026-04-30",
   "aggregator": "gateway",
   "servers": [
-    { "alias": "gateway", "tools": ["mcp__gateway__memory__recall", "..."] },
+    { "alias": "gateway", "tools": ["mcp__memory__recall", "..."] },
     { "alias": "todoist", "tools": ["create_task", "..."] }
   ]
 }
@@ -81,7 +81,7 @@ For each capability in the table, walk the tool list and check for a matching to
 - `transcription` → any tool matching `transcribe_audio*` or `transcribe-*`.
 - `calendar-and-tasks` → require BOTH a `create_event` (or `manage_event`, the Google Workspace MCP's consolidated create/update/delete tool) tool AND a `create_task` (or `create_todoist_task`, or `manage_task`) tool, possibly across different MCPs.
 - `semantic-store` → any pair of `upsert-records` + `search-records` (or equivalent vector-db verbs).
-- `contact-discovery` → Hunter REST API via `curl`; no MCP to detect. Resolves to `{ "via": "rest", "service": "hunter" }` when `HUNTER_API_KEY` is available under `with-secrets` (check with `with-secrets --list`). If the user has an MCP exposing `Domain-Search` AND `Email-Finder` AND `Email-Verifier` on the same alias, that also works.
+- `contact-discovery` → Hunter REST API via `curl`; no MCP to detect. Resolves to `{ "via": "rest", "service": "hunter" }` when `HUNTER_API_KEY` is set in the environment. If the user has an MCP exposing `Domain-Search` AND `Email-Finder` AND `Email-Verifier` on the same alias, that also works.
 
 If multiple candidates match (e.g. user has both `gws-personal` and `gws-business` for email), keep all of them and let the user choose during step 6.
 
@@ -127,7 +127,7 @@ Update `${CAREER_DATA_DIR}/config.json` with a `capabilities` block:
     "email-send":          { "via": "existing-mcp", "alias": "gws-personal", "tool": "send_email" },
     "transcription":       { "via": "companion-plugin", "plugin": "transcription-pipeline" },
     "calendar-and-tasks":  { "via": "existing-mcp", "calendar": { "alias": "gws-personal", "tool": "manage_event", "action": "create" }, "tasks": { "alias": "todoist", "tool": "create_task" } },
-    "semantic-store":      { "via": "existing-mcp", "alias": "gateway-memory", "search-tool": "mcp__gateway__memory__recall", "upsert-tool": "mcp__gateway__memory__remember", "namespace": "career-workspace" },
+    "semantic-store":      { "via": "existing-mcp", "alias": "gateway-memory", "search-tool": "mcp__memory__recall", "upsert-tool": "mcp__memory__remember", "namespace": "career-workspace" },
     "social-sentiment":    { "via": "companion-plugin", "plugin": "social-feedback" },
     "decision-frameworks": { "via": "companion-plugin", "plugin": "decision-evaluation-framework" },
     "crm":                 { "via": "builtin-markdown" }

@@ -1,8 +1,8 @@
 ---
 name: vector-conflict-check
-description: For CONTEXT_STORE=memory — verify the workspace namespace(s) on the gateway `memory` server (tools mcp__gateway__memory__*) against the local workspace. Flags memories whose source file was deleted, renamed, or content-changed (hash mismatch), and surfaces memories whose content contradicts current ground-truth (stale claims, closed engagements, outdated targets). Proposes deletes/re-stores; never silently mutates the store.
+description: For CONTEXT_STORE=memory — verify the workspace namespace(s) on the gateway `memory` server (tools mcp__memory__*) against the local workspace. Flags memories whose source file was deleted, renamed, or content-changed (hash mismatch), and surfaces memories whose content contradicts current ground-truth (stale claims, closed engagements, outdated targets). Proposes deletes/re-stores; never silently mutates the store.
 disable-model-invocation: false
-allowed-tools: Read, Write, Bash(sha256sum *), Bash(test *), Bash(date *), Bash(mkdir *), mcp__gateway__memory__list_namespaces, mcp__gateway__memory__list_memories, mcp__gateway__memory__recall, mcp__gateway__memory__update_memory, mcp__gateway__memory__forget
+allowed-tools: Read, Write, Bash(sha256sum *), Bash(test *), Bash(date *), Bash(mkdir *), mcp__memory__list_namespaces, mcp__memory__list_memories, mcp__memory__recall, mcp__memory__update_memory, mcp__memory__forget
 ---
 
 # Vector Conflict Check
@@ -75,6 +75,6 @@ Re-running after a clean apply produces an empty findings file (or skips writing
 
 ## Failure modes
 
-- **`memory` MCP missing** (tools `mcp__gateway__memory__*` don't resolve via `ToolSearch`) → bail with: "no `memory` MCP available — run `/career:detect-mcps`."
+- **`memory` MCP missing** (tools `mcp__memory__*` don't resolve via `ToolSearch`) → bail with: "no `memory` MCP available — run `/career:detect-mcps`."
 - **Namespace empty** → exit cleanly with "no memories to check."
 - **Network error mid-scan** → write partial findings, mark as `incomplete: true` in frontmatter.

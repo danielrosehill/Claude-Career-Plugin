@@ -58,11 +58,11 @@ The plugin ships no MCP servers. Hunter contact discovery calls the Hunter REST 
 
 | Capability | Used by | Route |
 | --- | --- | --- |
-| Hunter | `find-contact`, `find-email-by-name`, `verify-email`, `enrich-contact`, `bulk-verify-crm` | `https://api.hunter.io/v2/...` with `HUNTER_API_KEY` (Infisical, via `with-secrets`). Free plan, so credit-aware. |
+| Hunter | `find-contact`, `find-email-by-name`, `verify-email`, `enrich-contact`, `bulk-verify-crm` | `https://api.hunter.io/v2/...` with `HUNTER_API_KEY` (set in the environment). Free plan, so credit-aware. |
 
 Other capabilities (LinkedIn outreach, email send, transcription, calendar/tasks, semantic store) are resolved at onboard time by the `detect-mcps` skill, which can either reuse an MCP you already have, install a companion plugin, or — if you point it at an aggregated MCP server — index that server's tools and dispatch through it.
 
-The semantic store (`/career:context sync` → `memory-sync`, `semantic-recall`, `vector-init-applications`, `vector-conflict-check`) uses the `memory` upstream on the MCP gateway (tools `mcp__gateway__memory__*`) when `CONTEXT_STORE=memory`. Without it, `CONTEXT_STORE=markdown` (the default) and recall falls back to grep over the workspace. Until 2.3.0 this was Pinecone; `pinecone-sync` is now `memory-sync`.
+The semantic store (`/career:context sync` → `memory-sync`, `semantic-recall`, `vector-init-applications`, `vector-conflict-check`) uses the `memory` upstream on the MCP gateway (tools `mcp__memory__*`) when `CONTEXT_STORE=memory`. Without it, `CONTEXT_STORE=markdown` (the default) and recall falls back to grep over the workspace. Until 2.3.0 this was Pinecone; `pinecone-sync` is now `memory-sync`.
 
 ### Aggregated MCP servers
 

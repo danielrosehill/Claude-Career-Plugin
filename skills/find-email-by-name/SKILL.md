@@ -2,14 +2,14 @@
 name: find-email-by-name
 description: Given a person's name and their company (name or domain), return Hunter's best guess at their email address with a confidence score. Use when the user already knows who they want to reach and just needs the address. Differs from find-contact (which lists candidates at a company) — this is targeted at a single named person.
 disable-model-invocation: false
-allowed-tools: Read, Edit, Write, Bash(with-secrets *)
+allowed-tools: Read, Edit, Write, Bash(curl *)
 ---
 
 # Find Email By Name
 
 Wraps Hunter's `email-finder` endpoint. Targeted lookup for a single person.
 
-Route: Hunter REST API v2 with `curl` (no MCP). Key `HUNTER_API_KEY` is in Infisical; call as `with-secrets bash -c 'curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"'`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
+Route: Hunter REST API v2 with `curl` (no MCP). Needs `HUNTER_API_KEY` in the environment (supply it from your own secrets manager or shell); call as `curl -s -G "https://api.hunter.io/v2/<endpoint>" --data-urlencode "api_key=$HUNTER_API_KEY" --data-urlencode "k=v"`. Never print the key or write it to a file. Payload is under `data`, errors under `errors`. The account is on the Free plan (50 searches and 100 verifications a month), so keep calls to what is needed. Check the balance with `GET /v2/account` (free).
 
 
 ## Inputs

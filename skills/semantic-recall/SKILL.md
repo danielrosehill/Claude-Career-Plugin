@@ -1,14 +1,14 @@
 ---
 name: semantic-recall
-description: Query the `memory` upstream on the MCP gateway (tools mcp__gateway__memory__*), or fall back to grep-over-markdown, for context relevant to a task. Returns ranked snippets with cited paths. Used by suggest-companies, meeting-prep, weekly-plan, self-healing-context when CONTEXT_STORE=memory. Caller decides what to do with results.
+description: Query the `memory` upstream on the MCP gateway (tools mcp__memory__*), or fall back to grep-over-markdown, for context relevant to a task. Returns ranked snippets with cited paths. Used by suggest-companies, meeting-prep, weekly-plan, self-healing-context when CONTEXT_STORE=memory. Caller decides what to do with results.
 disable-model-invocation: false
-allowed-tools: Read, Bash(grep *), Bash(rg *), mcp__gateway__memory__recall
+allowed-tools: Read, Bash(grep *), Bash(rg *), mcp__memory__recall
 ---
 
 # Semantic Recall
 
 Pulls relevant context from the workspace for the current task. Two backends:
-- `CONTEXT_STORE=memory` → semantic search via the gateway `memory` server (`mcp__gateway__memory__recall`) over the namespace(s) `memory-sync` writes to. A legacy `CONTEXT_STORE=pinecone` is treated as `memory`.
+- `CONTEXT_STORE=memory` → semantic search via the gateway `memory` server (`mcp__memory__recall`) over the namespace(s) `memory-sync` writes to. A legacy `CONTEXT_STORE=pinecone` is treated as `memory`.
 - `CONTEXT_STORE=markdown` (default) → ripgrep over working-folder.
 
 The skill returns *citations* — paths + chunks. The caller is responsible for using them.
@@ -38,7 +38,7 @@ semantic-recall --query="user's stated salary floor and reasoning" --type=ground
 
 ### 2a. Memory backend
 
-- If the `mcp__gateway__memory__*` tools aren't loaded, load `recall` via `ToolSearch` (`select:mcp__gateway__memory__recall`).
+- If the `mcp__memory__*` tools aren't loaded, load `recall` via `ToolSearch` (`select:mcp__memory__recall`).
 - Call `recall` with `query`, `namespaces=[<namespace>]` (always pass it — never search across all namespaces, which would mix in unrelated personal memories), `limit` = `--top` (over-fetch ×2 when `--type` is set), `min_score` = `--min-score`.
 - If `--type` is set, keep only results tagged `type:<type>`, then trim to `--top`.
 - For each result, return: `{path, section, score, snippet, type}` — `path` / `section` / `type` come from the `path:` / `section:` / `type:` tags `memory-sync` writes; the snippet is the memory text.

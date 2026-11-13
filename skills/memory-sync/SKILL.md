@@ -1,8 +1,8 @@
 ---
 name: memory-sync
-description: Incremental sync of working-folder/ into a namespace of the `memory` upstream on the MCP gateway (tools mcp__gateway__memory__*) for semantic recall. Stores only changed files (content hash), forgets chunks of changed or deleted files. Namespace name from config. Idempotent.
+description: Incremental sync of working-folder/ into a namespace of the `memory` upstream on the MCP gateway (tools mcp__memory__*) for semantic recall. Stores only changed files (content hash), forgets chunks of changed or deleted files. Namespace name from config. Idempotent.
 disable-model-invocation: false
-allowed-tools: Read, Write, Bash(find *), Bash(sha256sum *), Bash(stat *), Bash(mkdir *), Bash(date *), mcp__gateway__memory__list_namespaces, mcp__gateway__memory__create_namespace, mcp__gateway__memory__remember, mcp__gateway__memory__forget, mcp__gateway__memory__list_memories
+allowed-tools: Read, Write, Bash(find *), Bash(sha256sum *), Bash(stat *), Bash(mkdir *), Bash(date *), mcp__memory__list_namespaces, mcp__memory__create_namespace, mcp__memory__remember, mcp__memory__forget, mcp__memory__list_memories
 ---
 
 # Memory Sync
@@ -18,7 +18,7 @@ Stores the workspace in the gateway's `memory` server so `semantic-recall` can p
 
 ## Prerequisites
 
-- The `memory` upstream on the MCP gateway, i.e. tools `mcp__gateway__memory__*`. If they are not in the tool list, load them with `ToolSearch` (`select:mcp__gateway__memory__list_namespaces,mcp__gateway__memory__remember,mcp__gateway__memory__forget,mcp__gateway__memory__list_memories`). If they still don't resolve, bail with: "no `memory` MCP available — run `/career:detect-mcps`."
+- The `memory` upstream on the MCP gateway, i.e. tools `mcp__memory__*`. If they are not in the tool list, load them with `ToolSearch` (`select:mcp__memory__list_namespaces,mcp__memory__remember,mcp__memory__forget,mcp__memory__list_memories`). If they still don't resolve, bail with: "no `memory` MCP available — run `/career:detect-mcps`."
 - Config keys: `CONTEXT_STORE=memory`, `MEMORY_NAMESPACE` (default `career-workspace`). A legacy config with `CONTEXT_STORE=pinecone` is treated as `memory`; tell the user to update the key.
 
 ## Procedure

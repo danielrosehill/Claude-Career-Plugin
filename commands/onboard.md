@@ -65,7 +65,7 @@ Fields:
 Ask the user, with these defaults pre-filled:
 
 - `WORKING_FOLDER` — auto-detected from `pwd`. This value is what skills resolve as `$CAREER_WORKSPACE` when the env var isn't set. Suggest the user export `CAREER_WORKSPACE=<path>` in their shell profile if they want to invoke career-os skills from any cwd.
-- `CONTEXT_STORE` — default `markdown`. Other option: `memory` — the `memory` upstream on the MCP gateway (tools `mcp__gateway__memory__*`); offer it only if those tools resolve via `ToolSearch`. If chosen, also set `MEMORY_NAMESPACE` (default `career-workspace`; a dedicated namespace, not one that holds hand-written personal memories) and run `/career:memory-sync` once onboarding is done.
+- `CONTEXT_STORE` — default `markdown`. Other option: `memory` — the `memory` upstream on the MCP gateway (tools `mcp__memory__*`); offer it only if those tools resolve via `ToolSearch`. If chosen, also set `MEMORY_NAMESPACE` (default `career-workspace`; a dedicated namespace, not one that holds hand-written personal memories) and run `/career:memory-sync` once onboarding is done.
 - `USER_LOCATION` — required. Used by `discover-remote-friendly` and `salary-research`.
 - `PREFERRED_EMAIL_SENDER` — `email-skills:send-personal-email` or `email-skills:send-business-email`. Skip if user is not pursuing outreach.
 - `RESEARCH_MODEL` — default `claude`. Options: `deepseek-pro`, `deepseek-flash`. Cost optimisation; can change later.
@@ -83,7 +83,7 @@ Invoke the `ground-truth` skill in **bulk-edit** mode. It walks the user through
 
 Ask whether the user routes their MCPs through an aggregator (a single MCP alias that proxies many upstream tools — e.g. MCP Jungle or a personal proxy).
 
-- If yes: prompt for the alias (e.g. `gateway`, which serves tools as `mcp__gateway__<server>__<tool>`) and, optionally, a path to a tool-inventory dump if they have one (`--inventory=<path>`).
+- If yes: prompt for the alias (e.g. `gateway`, which serves tools as `mcp__<alias>__<server>__<tool>`) and, optionally, a path to a tool-inventory dump if they have one (`--inventory=<path>`).
 - If no: skip — capability detection will scan all installed MCPs equally.
 
 Persist the answer to `${CAREER_DATA_DIR}/config.json`:
