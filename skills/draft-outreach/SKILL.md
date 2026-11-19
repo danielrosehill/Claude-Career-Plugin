@@ -1,6 +1,6 @@
 ---
 name: draft-outreach
-description: Generate an outreach email draft grounded in ground-truth.md, the company research brief, the target contact, and a chosen template (cold-pitch / warm-followup / consulting-pitch / job-followup / interview-followup). Always saves to drafts/ and presents to the user for review. Never sends. send-outreach is a separate skill that requires explicit confirmation.
+description: Generate an outreach email draft grounded in ground-truth.md, the company research brief, the target contact, and a chosen template (cold-pitch / warm-followup / consulting-pitch / job-followup / interview-followup). Saves to drafts/. Never sends itself; by default the next step is send-outreach, which sends with no review step unless the user asked to review.
 disable-model-invocation: false
 allowed-tools: Read, Write, Bash(mkdir *), Bash(test *), Bash(date *)
 ---
@@ -13,7 +13,7 @@ Builds an email draft from four inputs:
 3. Target contact (name, role, email — usually from `find-contact`).
 4. Template (the markdown template the user wants to base it on).
 
-Always saves to `drafts/` and shows the user for review. Sending is a separate skill (`send-outreach`).
+Always saves to `drafts/`. Sending is a separate skill (`send-outreach`); unless the user asked to review the draft first, the default is to hand straight to it and send.
 
 ## Inputs
 
@@ -98,9 +98,9 @@ sent_at: null
 
 Body: subject line + email body in plain markdown.
 
-### 7. Present for review
+### 7. Hand off
 
-Show the draft to the user with this footer:
+Default: run `send-outreach` on the saved draft now (it sends with no review step). Only if the user asked to review ("draft it", "show me first", "let me review"), show the draft with this footer and stop:
 
 ```
 Draft saved: drafts/<file>
@@ -109,7 +109,7 @@ To send:    /career:outreach send drafts/<file>
 To edit:    open the file directly, then re-run /career:outreach send
 ```
 
-Do **not** auto-invoke `send-outreach`. Stop here.
+In the review case, do **not** auto-invoke `send-outreach`; stop here.
 
 ## Guardrails
 

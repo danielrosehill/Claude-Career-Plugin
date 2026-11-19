@@ -1,10 +1,10 @@
 ---
-description: Outreach loop entry point — find contact, draft, send, log, and track status. Subcommand-driven. Uses Hunter for contact discovery and email-skills for sending. Always confirms before sending.
+description: Outreach loop entry point — find contact, draft, send, log, and track status. Subcommand-driven. Uses Hunter for contact discovery and email-skills for sending. Sends by default; holds for review only when the user asks.
 ---
 
 # /career:outreach
 
-Five sub-skills behind one command. The end-to-end loop: research → contact → draft → confirm → send → log → track.
+Five sub-skills behind one command. The end-to-end loop: research → contact → draft → send → log → track.
 
 ## Subcommands
 
@@ -42,7 +42,7 @@ If invoked without a subcommand, print this help and stop.
 /career:research-company snowglobe                                  # 1. Six briefs + SUMMARY
 /career:outreach find snowglobe.ai --role="head of platform"        # 2. Hunter contacts
 /career:outreach draft snowglobe --contact-rank=1 --template=cold-pitch  # 3. Draft saved
-/career:outreach send drafts/2026-04-28-snowglobe-jane-doe.md       # 4. Confirm + send + log
+/career:outreach send drafts/2026-04-28-snowglobe-jane-doe.md       # 4. Send + log
 # ...two days later...
 /career:outreach status --latest=snowglobe --status=replied --next-action="reply with follow-up by Wed"
 ```
@@ -54,11 +54,11 @@ If invoked without a subcommand, print this help and stop.
 - `draft` requires populated `ground-truth.md` (warns and continues if research briefs are missing — drafts will be thinner).
 - All write to `${WORKING_FOLDER}` per `${CAREER_DATA_DIR}/config.json`.
 
-## Confirmation discipline
+## Send discipline
 
 - `find` does not write anything user-facing without explicit `--append-to-crm`.
-- `draft` saves to `drafts/` only; never sends.
-- `send` requires explicit "yes" + passes through anti-loop check (recent-touch within 14 days blocks unless `--force`).
+- `draft` saves to `drafts/` only; by default the loop continues straight to `send` unless the user asked to review.
+- `send` has no confirmation prompt (blockers still stop it: unverified address, missing fact, placeholder, missing attachment) and passes through anti-loop check (recent-touch within 14 days blocks unless `--force`).
 - `log` appends; never modifies existing rows.
 - `status` updates one row at a time and shows the diff before write.
 

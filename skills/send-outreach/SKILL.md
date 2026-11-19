@@ -1,19 +1,19 @@
 ---
 name: send-outreach
-description: Send a previously-drafted outreach email. Reads a draft file from drafts/, presents it one final time to the user, requires explicit "yes, send" confirmation, then delegates to the email-skills companion plugin (personal or business sender per draft frontmatter). On send, updates the draft frontmatter to status=sent and appends a row to crm/outreach.md. Never sends without explicit confirmation.
+description: Send a previously-drafted outreach email. Reads a draft file from drafts/, checks it for blockers, then sends it with no review step (unless the user asked to review first), delegating to the email-skills companion plugin (personal or business sender per draft frontmatter). On send, updates the draft frontmatter to status=sent and appends a row to crm/outreach.md. Holds only when the user asked to review, or a blocker applies.
 disable-model-invocation: false
 allowed-tools: Read, Edit, Write, Bash(test *), Bash(date *)
 ---
 
 # Send Outreach
 
-Sends a draft. Always requires explicit user confirmation. Always logs to `crm/outreach.md` on send.
+Sends a draft. Sends by default: no confirmation prompt. Always logs to `crm/outreach.md` on send.
 
 ## Inputs
 
 `$ARGUMENTS`:
 - **Required**: `<draft-path>` — path (relative to `WORKING_FOLDER` or absolute) to the draft file. Usually `drafts/<YYYY-MM-DD>-<slug>-<contact>.md`.
-- Optional: `--force` — bypass the "no recent outreach to this contact" anti-loop check. Still requires final confirm.
+- Optional: `--force` — bypass the "no recent outreach to this contact" anti-loop check.
 
 ## Procedure
 
@@ -43,32 +43,17 @@ Read `${WORKING_FOLDER}/crm/outreach.md`. If a row exists for the same contact e
 
 If draft `sender_email` is set, pass it through; otherwise let the email skill resolve from its own config.
 
-### 4. Final confirmation
+### 4. Pre-send check (no confirmation prompt)
 
-Show the user:
+Default: send. When the user asks for an email, or a task calls for one, and what to say is clear, send it: applications, cold emails, pitches and formal emails included. No review step, no yes/no/edit menu, no Gmail draft left behind. Hold for review only when the user asked ("draft it", "show me first", "let me review", "don't send").
 
-```
-About to send:
-  to:      <name> <email>
-  from:    <sender_email> (<personal | business>)
-  subject: <subject>
-  via:     email-skills:<personal|business>
+Real blockers still stop the send: no verified address, a fact only the user can supply, a leftover placeholder (`{{...}}`), an attachment (e.g. a CV) that cannot be found. Name the blocker and stop.
 
-Body:
-<body>
-
-Confirm send? (yes / no / edit)
-```
-
-- `yes` → proceed.
-- `no` → abort, leave draft as-is.
-- `edit` → exit; user edits the file, re-runs `/career:outreach send`.
-
-Use `AskUserQuestion` with constrained options.
+Hebrew is the one hard check: every Hebrew paragraph in a raw `<div dir="rtl" style="text-align:right;">` (never entity-escaped), the Latin signature in a `dir="ltr"` block. After sending, read the sent message back, check the dir attributes survived and numbers, dates, phones and URLs read in order; if broken, fix and resend.
 
 ### 5. Send
 
-Invoke the chosen email skill with `to`, `subject`, `body`. Capture the return value (message-id if available).
+Invoke the chosen email skill with `to`, `subject`, `body`. Capture the return value (message-id if available). Report to the user in one line: recipient, subject, message id.
 
 ### 6. Update draft frontmatter
 
@@ -102,7 +87,7 @@ log:  crm/outreach.md (row appended)
 
 ## Guardrails
 
-- **Never sends without explicit user "yes".**
+- **Sends by default**; holds only when the user asked to review or a blocker (step 4) applies.
 - **Never re-sends** a draft already marked `sent`.
 - **Anti-loop** by default; `--force` opt-out.
 - **No silent edits.** If the user wants to change the draft, they re-edit and re-run; this skill does not modify body content.
